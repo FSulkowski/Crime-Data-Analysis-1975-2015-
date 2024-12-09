@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizations</title>
+    <link rel="stylesheet" href="../static/styles.css">
+     <!-- Preload other pages to make it faster when navigating -->
+     <link rel="preload" href="safest_cities.html" as="document">
+     <link rel="preload" href="crime_heatmap.html" as="document">
+     <link rel="preload" href="crime_index.html" as="document">
+</head>
+
+
+<body>
+    <header>
+        <h1>Crime Data Visualizations</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('prop1') }}">Home</a></li>
+                <li><a href="{{ url_for('prop2') }}">Data</a></li>
+                <li><a href="{{ url_for('prop8') }}">Code</a></li>
+                <li><a href="{{ url_for('prop3') }}">Visualizations</a></li>
+                <li><a href="{{ url_for('prop7') }}">Analysis</a>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <img src="../static/computer.png" alt="Description of image" style="display: block; margin: auto;">
+        <!-- HEATMAP -->
+        <section>
+            <h2>40-Year Violent Crime Heatmap: Visualizing City Crime Patterns</h2>
+            <p>This interactive heat map displays total violent crime levels over the last 40 years in major cities. Use the year filter to explore how violent crime rates have changed over time, with color variations showing the intensity of crime across the United States.</p>
+            
+            <a href="{{ url_for('prop4') }}" class="button-link">
+                <button>View Crime Heat Map</button>
+            </a>
+        </section>
+
+
+
+        <!-- BLANK Section -->
+        <section>
+            <h2>City-Specific Crime Trends: Interactive Line Graphs Over Time</h2>
+            <p>Explore city-specific crime trends over the past 40 years with our interactive line graphs. Using a dropdown filter, select any city to view its annual crime data, highlighting key shifts, spikes, and declines. This tool provides valuable insights into local crime patterns, aiding policy decisions and community initiatives.</p>
+
+            <a href="{{ url_for('prop6') }}" class="button-link">
+                <button>View Line Graph</button>
+            </a>
+        </section>
+
+
+        <!-- CITY SAFETY MAP -->
+        <section>
+            <h2>City Safety Rankings: A 40-Year Crime Analysis</h2>
+            <p>This map displays 40-year average crime indexes for cities, highlighting safety levels and the top 5 safest and most dangerous cities. Click on markers for detailed crime stats, including homicides and assaults per 1,000 residents. This map offers families valuable insight into historically safer places to live.</p>
+            
+            <a href="{{ url_for('prop5') }}" class="button-link">
+                <button>View City Safety Map</button>
+            </a>
+        </section>
+        
+        
+    </main>
+
+    <footer>
+        <p>&copy; Group 7</p>
+    </footer>
+
+ 
+</body>
+</html>

@@ -1,0 +1,147 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f4f7f6; 
+    color: #333; 
+    line-height: 1.6;
+}
+
+header {
+    background-color: #1e2a33; 
+    color: #f8f7f2; 
+    padding: 30px 20px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+}
+
+header h1 {
+    font-size: 2.5rem;
+    font-weight: 600;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    text-align: center;
+    margin-top: 20px;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #f8f7f2;
+    font-weight: 500;
+    font-size: 1.1rem;
+    padding: 10px 15px;
+    transition: color 0.3s ease, text-decoration 0.3s ease;
+}
+
+
+main {
+    padding: 30px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    gap: 40px;
+}
+
+
+
+section {
+    margin-bottom: 30px;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+section h2 {
+    color: #1e2a33; 
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+
+.button-link button {
+    background-color: #1e2a33;  
+    color: white;              
+    padding: 12px 25px;         
+    border: none;              
+    border-radius: 8px;        
+    cursor: pointer;           
+    font-size: 16px;          
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.button-link button:hover {
+    background-color: rgb(57, 127, 150);  
+    transform: translateY(-2px); 
+}
+
+
+footer {
+    text-align: center;
+    background-color: #1e2a33;
+    color: white;
+    padding: 10px;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    font-size: 0.9rem;
+}
+
+section p {
+    font-size: 1.1em;
+    margin-bottom: 15px;
+}
+
+ section {
+    transition: opacity 1s ease, transform 1s ease;
+}
+
+section:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.info {
+    padding: 6px 8px;
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.legend {
+    line-height: 1.5;
+    color: #555;
+}
+
+.legend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.7;
+}
+
+/* Hover Effects for Buttons and Links */
+a, .cta-button {
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+a:hover, .cta-button:hover {
+    transform: translateY(-3px); /* Slight lift effect */
+    color: #8fbdf8;
+}

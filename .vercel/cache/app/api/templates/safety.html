@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City Safety Rankings</title>
+    <link rel="stylesheet" href="../static/styles.css">
+    <style>
+        /* Fade-in animation CSS */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+
+        /* Active class for elements in the viewport */
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Crime Data Visualizations</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('prop1') }}">Home</a></li>
+                <li><a href="{{ url_for('prop2') }}">Data</a></li>
+                <li><a href="{{ url_for('prop8') }}">Code</a></li>
+                <li><a href="{{ url_for('prop3') }}">Visualizations</a></li>
+                <li><a href="{{ url_for('prop7') }}">Analysis</a>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <a href="{{ url_for('prop3') }}" class="button-link">
+            <button>Back to Crime Visualizations</button>
+        </a>
+        <!-- City Safety Map  -->
+        <section class="fade-in">
+            <h2>40-Year Insight: Safest and Most Dangerous U.S. Cities</h2>
+            <p>Explore city safety rankings with this interactive map. Click on a city to view detailed crime statistics and insights.</p>
+            <iframe src="{{ url_for('static', filename='safest_cities.html') }}" width="100%" height="600" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+        </section>
+
+        <section>
+            <div style="background-color: white; padding: 15px; border: 2px solid grey; font-size: 14px; margin-bottom: 20px; border-radius: 5px;">
+                <h2>Understanding the Crime Index</h3>
+                <p>The <strong>Crime Index</strong> is a measure of violent crime in a city, calculated as the ratio of total violent crimes to the population. It represents how many violent crimes occur per person in a given city. The calculation is as follows:</p>
+                <p><strong>Crime Index = Total Violent Crimes / Population</strong></p>
+                <p>This raw index is then scaled to a <strong>1-10 scale</strong> to make it easier to compare cities:</p>
+                <p><strong>Scaled Crime Index = 1 + 9 * (Crime Index - Min Crime Index) / (Max Crime Index - Min Crime Index)</strong></p>
+                <p>The scaled value ranges from <strong>1</strong> (indicating the lowest crime rate) to <strong>10</strong> (indicating the highest crime rate). This allows for quick comparisons between cities:</p>
+                <ul style="list-style-type: none; padding-left: 0;">
+                    <li><span style="color: green;">&#8226;</span> <strong>Best Cities (Low Crime)</strong> - These cities have the lowest crime rates.</li>
+                    <li><span style="color: orange;">&#8226;</span> <strong>Average Cities</strong> - These cities have moderate crime rates.</li>
+                    <li><span style="color: red;">&#8226;</span> <strong>Worst Cities (High Crime)</strong> - These cities have the highest crime rates.</li>
+                </ul>
+                
+            </div>
+            
+            
+
+
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; Group 7</p>
+    </footer>
+    <script>
+
+        // Function to handle fade-in animation on scroll
+        function handleScrollAnimation() {
+            const sections = document.querySelectorAll('.fade-in');
+            sections.forEach(section => {
+                const sectionPosition = section.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.2;
+                if (sectionPosition < screenPosition) {
+                    section.classList.add('visible');
+                }
+            });
+        }
+        
+        // Initial trigger to load animations on page load
+        handleScrollAnimation();
+    </script>
+</body>
+</html>

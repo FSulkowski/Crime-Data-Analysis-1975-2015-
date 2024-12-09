@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tracking Crime Trends: 1975 to 2015</title>
+    <link rel="stylesheet" href="../static/styles.css">
+    <style>
+        .code-container {
+            border: 2px solid #ccc;
+            background-color: #2b2b2b;
+            border-radius: 8px;
+            padding: 10px;
+            color: #f8f8f2;
+            font-family: Consolas, monospace;
+            line-height: 1;
+            overflow-x: auto;
+            white-space: pre;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+        }
+        .section-label {
+            color: #66d9ef;
+            font-weight: bold;
+            margin: 5px 0 2px;
+            display: inline-block;
+        }
+        /* Custom colors for specific code elements */
+        .keyword { color: #66d9ef; }
+        .function { color: #a6e22e; }
+        .string { color: #e6db74; }
+        .comment { color: #75715e; font-style: italic; }
+        .number { color: #ae81ff; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Code Snippets</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('prop1') }}">Home</a></li>
+                <li><a href="{{ url_for('prop2') }}">Data</a></li>
+                <li><a href="{{ url_for('prop8') }}">Code</a></li>
+                <li><a href="{{ url_for('prop3') }}">Visualizations</a></li>
+                <li><a href="{{ url_for('prop7') }}">Analysis</a>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <img src="../static/coding_image.png" alt="Description of image" style="display: block; margin: auto;">
+        <h1>Flask Application Code</h1>
+
+        <div class="code-container">
+           
+        
+            <span class="section-label"># Initialize Flask App</span>
+            <pre><code>
+        app = <span class="function">Flask</span>(<span class="string">__name__</span>)
+            </code></pre>
+        
+            <span class="section-label"># Define Routes</span>
+            <pre><code>
+        @app.route(<span class="string">"/"</span>)
+        def <span class="keyword">home</span>():
+            <span class="keyword">return</span> render_template(<span class="string">'index.html'</span>)
+        
+        @app.route(<span class="string">"/data"</span>) 
+        def <span class="keyword">data</span>(): 
+            <span class="keyword">return</span> render_template(<span class="string">'data.html'</span>)
+        
+        @app.route(<span class="string">"/visualizations"</span>)
+        def <span class="keyword">visualizations</span>():
+            <span class="keyword">return</span> render_template(<span class="string">'visualizations.html'</span>)
+                    
+        @app.route(<span class="string">"/heatmap"</span>)
+        def <span class="keyword">heatmap</span>():
+            data_json = merged_df.<span class="function">to_json</span>(<span class="keyword">orient</span>=<span class="string">'records'</span>)  <span class="comment"># Convert DataFrame to JSON</span>
+            unique_years = merged_df[<span class="string">'report_year'</span>].<span class="function">unique</span>()  <span class="comment"># Extract unique years</span>
+            <span class="keyword">return</span> render_template(<span class="string">'heatmap.html'</span>, data=data_json, years=unique_years)
+        
+        @app.route(<span class="string">"/update_map/&lt;int:year&gt;"</span>)
+        def <span class="keyword">update_map</span>(year):
+            filtered_data = merged_df[merged_df[<span class="string">'report_year'</span>] == year]
+            heat_data = [[row[<span class="string">'Latitude'</span>], row[<span class="string">'Longitude'</span>], row[<span class="string">'crimes_percapita'</span>]] 
+                         <span class="keyword">for</span> index, row <span class="keyword">in</span> filtered_data.<span class="function">iterrows</span()>]
+            <span class="keyword">return</span> jsonify({<span class="string">'heat_data'</span>: heat_data})
+        
+        @app.route(<span class="string">"/view_map/&lt;int:year&gt;"</span>)
+        def <span class="keyword">view_map</span>(year):
+            map_file = <span class="string">f'crime_heatmap_{year}.html'</span>
+            <span class="keyword">return</span> render_template(<span class="string">'view_map.html'</span>, map_file=map_file)
+                   
+        @app.route(<span class="string">"/safest_cities"</span>)
+        def <span class="keyword">safest_cities</span>():
+            <span class="keyword">return</span> render_template(<span class="string">'safety.html'</span>)
+        
+        @app.route(<span class="string">"/city_specific_crime"</span>)
+        def <span class="keyword">city_specific_crime</span>():
+            <span class="keyword">return</span> render_template(<span class="string">'city_specific_crime.html'</span>)
+        
+        @app.route(<span class="string">"/analysis"</span>)
+        def <span class="keyword">analysis</span>():
+            <span class="keyword">return</span> render_template(<span class="string">'analysis.html'</span>)
+            </code></pre>
+        
+            <span class="section-label"># Run Flask App</span>
+            <pre><code>
+        if __name__ == <span class="string">"__main__"</span>:
+            app.<span class="function">run</span>(debug=<span class="keyword">True</span>)
+            </code></pre>
+        </div>
+        
+        <h1>SQL Schema for Crime Data</h1>
+        <div class="code-container">
+            <pre><code>
+<span class="keyword">CREATE</span> <span class="keyword">TABLE</span> crime_data (
+    <span class="type">id</span> <span class="keyword">SERIAL</span> <span class="keyword">PRIMARY</span> <span class="keyword">KEY</span>,
+    <span class="type">report_year</span> <span class="keyword">INTEGER</span>,
+    <span class="type">agency_code</span> <span class="keyword">VARCHAR</span>(255),
+    <span class="type">agency_jurisdiction</span> <span class="keyword">VARCHAR</span>(255),
+    <span class="type">population</span> <span class="keyword">FLOAT</span>,
+    <span class="type">violent_crimes</span> <span class="keyword">FLOAT</span>,
+    <span class="type">homicides</span> <span class="keyword">FLOAT</span>,
+    <span class="type">rapes</span> <span class="keyword">FLOAT</span>,
+    <span class="type">assaults</span> <span class="keyword">FLOAT</span>,
+    <span class="type">robberies</span> <span class="keyword">FLOAT</span>,
+    <span class="type">months_reported</span> <span class="keyword">FLOAT</span>,
+    <span class="type">crimes_percapita</span> <span class="keyword">FLOAT</span>,
+    <span class="type">homicides_percapita</span> <span class="keyword">FLOAT</span>,
+    <span class="type">rapes_percapita</span> <span class="keyword">FLOAT</span>,
+    <span class="type">assaults_percapita</span> <span class="keyword">FLOAT</span>,
+    <span class="type">robberies_percapita</span> <span class="keyword">FLOAT</span>
+);
+            </code></pre>
+        </div>
+        <h1>Interactive Heatmap Code Snippet</h1>
+
+        <div class="code-container">
+            <code>
+            <span class="comment"># Initialize Flask app</span>
+            <span class="keyword">app</span> = <span class="function">Flask</span>(<span class="string">__name__</span>)
+            
+            <span class="keyword">@app.route</span>(<span class="string">'/'</span>)
+            <span class="keyword">def</span> index():
+                <span class="comment"># Convert the DataFrame to JSON</span>
+                data_json = <span class="function">merged_df.to_json</span>(<span class="keyword">orient</span>=<span class="string">'records'</span>)
+                <span class="function">print</span>(data_json)  <span class="comment"># Log the data for debugging</span>
+                unique_years = merged_df[<span class="string">'report_year'</span>].<span class="function">unique</span>()
+                <span class="keyword">return</span> <span class="function">render_template</span>(<span class="string">'heatmap.html'</span>, data=data_json, years=unique_years)
+            
+            <span class="keyword">@app.route</span>(<span class="string">'/update_map/&lt;int:year&gt;'</span>)
+            <span class="keyword">def</span> update_map(year):
+                m = <span class="function">folium.Map</span>(<span class="keyword">location</span>=[<span class="number">39.8283</span>, <span class="number">-98.5795</span>], <span class="keyword">zoom_start</span>=<span class="number">4</span>)
+                filtered_data = merged_df[merged_df[<span class="string">'report_year'</span>] == year]
+                heat_data = [[row[<span class="string">'Latitude'</span>], row[<span class="string">'Longitude'</span>], row[<span class="string">'crimes_percapita'</span>]] <span class="keyword">for</span> index, row <span class="keyword">in</span> filtered_data.<span class="function">iterrows</span>()]
+                <span class="function">HeatMap</span>(heat_data, <span class="keyword">radius</span>=<span class="number">20</span>).<span class="function">add_to</span>(m)
+                map_file = <span class="string">f'static/crime_heatmap_{year}.html'</span>
+                m.<span class="function">save</span>(map_file)
+                <span class="keyword">return</span> <span class="function">jsonify</span>({<span class="string">'heat_data'</span>: heat_data})
+            
+            <span class="keyword">@app.route</span>(<span class="string">'/view_map/&lt;int:year&gt;'</span>)
+            <span class="keyword">def</span> view_map(year):
+                map_file = <span class="string">f'crime_heatmap_{year}.html'</span>
+                <span class="keyword">return</span> <span class="function">render_template</span>(<span class="string">'view_map.html'</span>, map_file=map_file)
+            
+            <span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:
+                app.<span class="function">run</span>(<span class="keyword">port</span>=<span class="number">5001</span>)
+            </code>
+            </div>
+        
+        <h1>Interactive Line Graph Code Snippet</h1>
+        <div class="code-container">
+            <pre><code>
+<span class="comment"># Load your actual DataFrame from a CSV file</span>
+<span class="variable">df</span> = <span class="function">pd.read_csv</span>('<span class="string">../Resources/df_cleaned.csv</span>')
+
+<span class="comment"># Create a dropdown for city selection</span>
+<span class="variable">city_dropdown</span> = <span class="function">Dropdown</span>(
+    <span class="keyword">options</span>=<span class="function">sorted</span>(<span class="variable">df</span>[<span class="string">'agency_jurisdiction'</span>].<span class="function">unique</span>()),
+    <span class="keyword">value</span>=<span class="function">sorted</span>(<span class="variable">df</span>[<span class="string">'agency_jurisdiction'</span>].<span class="function">unique</span>())[0],  <span class="comment"># Set to the first value dynamically</span>
+    <span class="keyword">description</span>=<span class="string">'Select City:'</span>,
+)
+
+<span class="variable">output</span> = <span class="function">Output</span>()
+
+<span class="comment"># Function to update graph based on selected city</span>
+<span class="function">def</span> <span class="variable">update_graph</span>(<span class="variable">selected_city</span>):
+    <span class="keyword">with</span> <span class="variable">output</span>:
+        <span class="function">output.clear_output</span>()
+        <span class="variable">city_data</span> = <span class="variable">df</span>[<span class="variable">df</span>[<span class="string">'agency_jurisdiction'</span>] == <span class="variable">selected_city</span>]
+        
+        <span class="function">plt.figure</span>(<span class="keyword">figsize</span>=(12, 6))
+        <span class="function">sns.lineplot</span>(<span class="keyword">data</span>=<span class="variable">city_data</span>, <span class="keyword">x</span>='<span class="string">report_year</span>', <span class="keyword">y</span>='<span class="string">violent_crimes</span>', <span class="keyword">estimator</span>='sum')
+
+        <span class="comment"># Set the title and labels</span>
+        <span class="function">plt.title</span>(<span class="string">f'Violent Crimes Over Time in {selected_city}'</span>)
+        <span class="function">plt.xlabel</span>(<span class="string">'Year'</span>)
+        <span class="function">plt.ylabel</span>(<span class="string">'Number of Violent Crimes'</span>)
+
+        <span class="function">plt.xticks</span>(<span class="keyword">rotation</span>=45)
+        <span class="function">plt.tight_layout</span>()
+        <span class="function">plt.show</span>()
+
+<span class="comment"># Link the dropdown to the update function</span>
+<span class="variable">city_dropdown</span>.<span class="function">observe</span>(<span class="lambda">lambda</span> <span class="variable">change</span>: <span class="function">update_graph</span>(<span class="variable">change</span>[<span class="string">'new'</span>]), <span class="keyword">names</span>='<span class="string">value</span>')
+
+<span class="comment"># Display the dropdown and output area</span>
+<span class="function">display</span>(<span class="variable">city_dropdown</span>, <span class="variable">output</span>)
+
+<span class="comment"># Initialize with the first city</span>
+<span class="function">update_graph</span>(<span class="variable">city_dropdown</span>.<span class="variable">value</span>)
+            </code></pre>
+        </div>
+       
+        
+
+    </main>
+</body>
+</html>

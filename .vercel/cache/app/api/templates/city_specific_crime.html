@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City Safety Rankings</title>
+    <link rel="stylesheet" href="../static/styles.css">
+    <style>
+        /* Fade-in animation CSS */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+
+        /* Active class for elements in the viewport */
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+   
+</head>
+<body>
+    <header>
+        <h1>Crime Data Visualizations</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('prop1') }}">Home</a></li>
+                <li><a href="{{ url_for('prop2') }}">Data</a></li>
+                <li><a href="{{ url_for('prop8') }}">Code</a></li>
+                <li><a href="{{ url_for('prop3') }}">Visualizations</a></li>
+                <li><a href="{{ url_for('prop7') }}">Analysis</a>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <a href="{{ url_for('prop3') }}" class="button-link">
+            <button>Back to Crime Visualizations</button>
+        </a>
+        <!-- Second Section (City Safety Rankings Map) -->
+        <section class="fade-in">
+            <h2>City Crime Trend Line Graph</h2>
+            <p>Explore crime trends over time by selecting a city.</p>
+            
+           
+            <iframe src="{{ url_for('static', filename='lineplot_with_dropdown.html') }}" width="100%" height="600" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            
+           
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; Group 7</p>
+    </footer>
+
+    <script>
+        // Function to navigate to the target page
+        function navigateTo(url) {
+            window.location.href = url;
+        }
+
+        // Button hover animation
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mouseover', () => {
+                button.style.transform = 'scale(1.05)';
+                button.style.transition = 'transform 0.2s ease';
+            });
+
+            button.addEventListener('mouseout', () => {
+                button.style.transform = 'scale(1)';
+            });
+        });
+
+        // Function to handle fade-in animation on scroll
+        function handleScrollAnimation() {
+            const sections = document.querySelectorAll('.fade-in');
+            sections.forEach(section => {
+                const sectionPosition = section.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.2;
+
+                if (sectionPosition < screenPosition) {
+                    section.classList.add('visible');
+                }
+            });
+        }
+
+        // Event listener for scrolling
+        window.addEventListener('scroll', handleScrollAnimation);
+
+        // Initial trigger to load animations on page load
+        handleScrollAnimation();
+    </script>
+</body>
+</html>

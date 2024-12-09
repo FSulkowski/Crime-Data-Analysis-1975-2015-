@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crime Heatmap</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}"> <!-- Link to your CSS file -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/simpleheat/simpleheat.js"></script> <!-- Include SimpleHeat -->
+    <script src="{{ url_for('static', filename='HeatLayer.js') }}"></script> <!-- Local Leaflet Heat plugin source https://github.com/Leaflet/Leaflet.heat-->
+</head>
+<body>
+    <div style="text-align: center;">
+        <label for="yearDropdown">Select Year:</label>
+        <select id="yearDropdown" onchange="updateMap(this.value)">
+            <option value="">--Select a Year--</option>
+            {% for year in years %}
+                <option value="{{ year }}">{{ year }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div id="map"></div>
+    
+    <script>
+        // Initialize the map
+        const map = L.map('map').setView([39.8283, -98.5795], 5);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+        }).addTo(map);
+        
+        addLegend();
+        // Function to create and add the legend
+        function addLegend() {
+            const legend = L.control({ position: 'bottomright' });
+
+            legend.onAdd = function () {
+                const div = L.DomUtil.create('div', 'info legend');
+                const grades = [0, 200, 400, 600, 800]; // Define your ranges based on crimes_percapita // Define your ranges based on crime_percapita
+                const labels = [];
+
+                // Generate labels for the legend
+                for (let i = 0; i < grades.length; i++) {
+                    labels.push(
+                        '<i style="background:' + getColor(grades[i]) + '"></i> ' +
+                        grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+')
+                    );
+                }
+                div.innerHTML = '<strong>Crime per Capita</strong><br>' + labels.join('');
+                return div;
+            };
+
+            legend.addTo(map);
+        }
+
+        // Function to get color based on crime_percapita
+        function getColor(d) {
+            return d > 800 ? '#FD8E18' :
+                   d > 600 ? '#FD8E18' :
+                   d > 400 ? '#F1F930' :
+                   d > 200 ? '#67FA43' :
+                   d > 0 ?   '#5EF7DD' :
+                             '#7BB4F4';
+        }
+
+        // Function to update the heatmap based on selected year
+        function updateMap(year) {
+            fetch(`/update_map/${year}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Clear existing heatmap layer if any
+                    if (window.heatmapLayer) {
+                        map.removeLayer(window.heatmapLayer);
+                    }
+
+                    // Create a new heatmap layer
+                    var heatData = data.heat_data;
+                    window.heatmapLayer = L.heatLayer(heatData, { radius: 20, blur: 20, max: 1 }).addTo(map);
+                })
+                .catch(error => console.error('Error fetching heatmap data:', error));
+        }
+
+        // Automatically update the map for the first available year on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropdown = document.getElementById('yearDropdown');
+            const initialYear = dropdown.options[dropdown.selectedIndex].value;
+            if (initialYear) {
+                updateMap(initialYear); // Show the heatmap for the initially selected year
+            }
+        });
+
+        
+    </script>
+</body>
+</html>

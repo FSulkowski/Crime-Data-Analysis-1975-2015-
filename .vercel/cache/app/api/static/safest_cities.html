@@ -1,0 +1,1748 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_1dca6f04ed8ddb5ad65b409d42a7ac9a {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+        
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/leaflet.markercluster.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.Default.css"/>
+</head>
+<body>
+    
+    
+        <div style="position: fixed; 
+                    top: 10px; right: 10px; 
+                    background-color: white; 
+                    border: 2px solid grey; 
+                    padding: 10px; 
+                    font-size: 12px;
+                    z-index: 9999;">
+            <b>Legend:</b><br>
+            <i class="fa fa-check-circle" style="color: green;"></i> Best Cities (Low Crime)<br>
+            <i class="fa fa-warning" style="color: orange;"></i> Average Cities<br>
+            <i class="fa fa-exclamation-circle" style="color: red;"></i> Worst Cities (High Crime)<br>
+        </div>
+    
+    
+        <div style="position: fixed; 
+                    bottom: 10px; right: 10px; 
+                    background-color: white; 
+                    border: 2px solid grey; 
+                    padding: 10px; 
+                    font-size: 12px;
+                    z-index: 9999;">
+            <b>Top 5 Best Cities (Low Crime):</b><br>
+            Virginia Beach, VA: 1.00<br>Honolulu, HI: 1.19<br>Austin, TX: 2.18<br>San Jose, CA: 2.18<br>Mesa, AZ: 2.32
+            <br><br>
+            <b>Top 5 Worst Cities (High Crime):</b><br>
+            Atlanta, GA: 10.00<br>Miami, FL: 9.77<br>St. Louis, MO: 9.75<br>Newark, NJ: 9.46<br>Detroit, MI: 9.21
+        </div>
+    
+    
+        <div style="position: fixed; 
+                    bottom: 10px; left: 10px; 
+                    background-color: white; 
+                    border: 2px solid grey; 
+                    padding: 10px; 
+                    font-size: 12px;
+                    z-index: 9999;">
+            <b>Average Crime Stats (per 1000 People):</b><br>
+            <b>Crimes per 1000 People:</b> 11.62<br>
+            <b>Homicides per 1000 People:</b> 0.16<br>
+            <b>Rapes per 1000 People:</b> 0.63<br>
+            <b>Assaults per 1000 People:</b> 5.92<br>
+            <b>Robberies per 1000 People:</b> 4.91
+        </div>
+    
+    
+            <div class="folium-map" id="map_1dca6f04ed8ddb5ad65b409d42a7ac9a" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_1dca6f04ed8ddb5ad65b409d42a7ac9a = L.map(
+                "map_1dca6f04ed8ddb5ad65b409d42a7ac9a",
+                {
+                    center: [39.8283, -98.5795],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 4,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_594d76a2f0253b85cb6083f3cb697003 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors", "detectRetina": false, "maxNativeZoom": 19, "maxZoom": 19, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            );
+        
+    
+            tile_layer_594d76a2f0253b85cb6083f3cb697003.addTo(map_1dca6f04ed8ddb5ad65b409d42a7ac9a);
+        
+    
+            var marker_cluster_c3d03d10890492f292004f4c656a589c = L.markerClusterGroup(
+                {}
+            );
+        
+    
+            var marker_e91d2b576545da5155a93371614ed908 = L.marker(
+                [35.0841034, -106.650985],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_30e0e1c265554179961ac2169fdd0f13 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "check-circle", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_e91d2b576545da5155a93371614ed908.setIcon(icon_30e0e1c265554179961ac2169fdd0f13);
+        
+    
+        var popup_3770bc7e52394ac6af0eefb4ffefea8b = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_5c72e28a92c603be2ee118465b650ac6 = $(`<div id="html_5c72e28a92c603be2ee118465b650ac6" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Albuquerque, NM<br>             <b>Crime Index (1-10):</b> 4.38<br>             <b>Crimes per 1000 People:</b> 10.46<br>             <b>Homicides per 1000 People:</b> 0.10<br>             <b>Rapes per 1000 People:</b> 0.61<br>             <b>Assaults per 1000 People:</b> 6.87<br>             <b>Robberies per 1000 People:</b> 2.88         </div>`)[0];
+                popup_3770bc7e52394ac6af0eefb4ffefea8b.setContent(html_5c72e28a92c603be2ee118465b650ac6);
+            
+        
+
+        marker_e91d2b576545da5155a93371614ed908.bindPopup(popup_3770bc7e52394ac6af0eefb4ffefea8b)
+        ;
+
+        
+    
+    
+            var marker_b1dd6bd5d4e91fa4a0d54bb374e70ade = L.marker(
+                [32.7355816, -97.1071186],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_15c6053643b512c719c249a12f48bf1d = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "check-circle", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_b1dd6bd5d4e91fa4a0d54bb374e70ade.setIcon(icon_15c6053643b512c719c249a12f48bf1d);
+        
+    
+        var popup_e80f497b2edb11cf92dd7dda11447fae = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_3ab24b3a5d5658e3721f144632692b85 = $(`<div id="html_3ab24b3a5d5658e3721f144632692b85" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Arlington, TX<br>             <b>Crime Index (1-10):</b> 2.56<br>             <b>Crimes per 1000 People:</b> 6.02<br>             <b>Homicides per 1000 People:</b> 0.05<br>             <b>Rapes per 1000 People:</b> 0.44<br>             <b>Assaults per 1000 People:</b> 3.73<br>             <b>Robberies per 1000 People:</b> 1.81         </div>`)[0];
+                popup_e80f497b2edb11cf92dd7dda11447fae.setContent(html_3ab24b3a5d5658e3721f144632692b85);
+            
+        
+
+        marker_b1dd6bd5d4e91fa4a0d54bb374e70ade.bindPopup(popup_e80f497b2edb11cf92dd7dda11447fae)
+        ;
+
+        
+    
+    
+            var marker_01a285df776a71c2aa153817d94cdd28 = L.marker(
+                [33.7489924, -84.3902644],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_3af629d2c26b252d0b57b904dde5e86d = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "exclamation-circle", "iconColor": "white", "markerColor": "red", "prefix": "fa"}
+            );
+            marker_01a285df776a71c2aa153817d94cdd28.setIcon(icon_3af629d2c26b252d0b57b904dde5e86d);
+        
+    
+        var popup_58aa0f24960d5ed4353c7da56294e527 = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_51b651750d8b43dbf0a3c9692e1dda22 = $(`<div id="html_51b651750d8b43dbf0a3c9692e1dda22" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Atlanta, GA<br>             <b>Crime Index (1-10):</b> 10.00<br>             <b>Crimes per 1000 People:</b> 24.15<br>             <b>Homicides per 1000 People:</b> 0.35<br>             <b>Rapes per 1000 People:</b> 0.97<br>             <b>Assaults per 1000 People:</b> 13.22<br>             <b>Robberies per 1000 People:</b> 9.61         </div>`)[0];
+                popup_58aa0f24960d5ed4353c7da56294e527.setContent(html_51b651750d8b43dbf0a3c9692e1dda22);
+            
+        
+
+        marker_01a285df776a71c2aa153817d94cdd28.bindPopup(popup_58aa0f24960d5ed4353c7da56294e527)
+        ;
+
+        
+    
+    
+            var marker_397f79f97490d7e990b1f78d5dc14f4f = L.marker(
+                [41.7571701, -88.3147539],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_5e68f4a25dd26ce64a670bc659d407d0 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "check-circle", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_397f79f97490d7e990b1f78d5dc14f4f.setIcon(icon_5e68f4a25dd26ce64a670bc659d407d0);
+        
+    
+        var popup_5a28ca5d3e0c038902525669aa07b8f4 = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_da12501bfa43ffa5615f89f3bb8b40f8 = $(`<div id="html_da12501bfa43ffa5615f89f3bb8b40f8" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Aurora, CO<br>             <b>Crime Index (1-10):</b> 3.30<br>             <b>Crimes per 1000 People:</b> 7.82<br>             <b>Homicides per 1000 People:</b> 0.06<br>             <b>Rapes per 1000 People:</b> 0.63<br>             <b>Assaults per 1000 People:</b> 5.21<br>             <b>Robberies per 1000 People:</b> 1.92         </div>`)[0];
+                popup_5a28ca5d3e0c038902525669aa07b8f4.setContent(html_da12501bfa43ffa5615f89f3bb8b40f8);
+            
+        
+
+        marker_397f79f97490d7e990b1f78d5dc14f4f.bindPopup(popup_5a28ca5d3e0c038902525669aa07b8f4)
+        ;
+
+        
+    
+    
+            var marker_4f7d70522fbbccabd9b2bffa971bf6d9 = L.marker(
+                [30.341598599999998, -97.58721349128422],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_cbd0e2130c93c8159a19ca103a985512 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "check-circle", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_4f7d70522fbbccabd9b2bffa971bf6d9.setIcon(icon_cbd0e2130c93c8159a19ca103a985512);
+        
+    
+        var popup_d7d6b2b4a8347cef987ed78d3a342fd8 = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_ac496e12167167bbe6654f5c99815862 = $(`<div id="html_ac496e12167167bbe6654f5c99815862" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Austin, TX<br>             <b>Crime Index (1-10):</b> 2.18<br>             <b>Crimes per 1000 People:</b> 5.09<br>             <b>Homicides per 1000 People:</b> 0.07<br>             <b>Rapes per 1000 People:</b> 0.50<br>             <b>Assaults per 1000 People:</b> 2.59<br>             <b>Robberies per 1000 People:</b> 1.94         </div>`)[0];
+                popup_d7d6b2b4a8347cef987ed78d3a342fd8.setContent(html_ac496e12167167bbe6654f5c99815862);
+            
+        
+
+        marker_4f7d70522fbbccabd9b2bffa971bf6d9.bindPopup(popup_d7d6b2b4a8347cef987ed78d3a342fd8)
+        ;
+
+        
+    
+    
+            var marker_9b77a80eaea497af10f8bac25b3a279d = L.marker(
+                [39.2908816, -76.610759],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_a2a5b5ea64347929d27d1fe8fde3247f = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "exclamation-circle", "iconColor": "white", "markerColor": "red", "prefix": "fa"}
+            );
+            marker_9b77a80eaea497af10f8bac25b3a279d.setIcon(icon_a2a5b5ea64347929d27d1fe8fde3247f);
+        
+    
+        var popup_f4c06429cfe033682681536f1ca1e8ea = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_2432b864564a3bce2f438f77e9273a8d = $(`<div id="html_2432b864564a3bce2f438f77e9273a8d" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Baltimore, MD<br>             <b>Crime Index (1-10):</b> 8.55<br>             <b>Crimes per 1000 People:</b> 20.61<br>             <b>Homicides per 1000 People:</b> 0.36<br>             <b>Rapes per 1000 People:</b> 0.62<br>             <b>Assaults per 1000 People:</b> 9.47<br>             <b>Robberies per 1000 People:</b> 10.17         </div>`)[0];
+                popup_f4c06429cfe033682681536f1ca1e8ea.setContent(html_2432b864564a3bce2f438f77e9273a8d);
+            
+        
+
+        marker_9b77a80eaea497af10f8bac25b3a279d.bindPopup(popup_f4c06429cfe033682681536f1ca1e8ea)
+        ;
+
+        
+    
+    
+            var marker_2032e1daa79d30eb8075afd13f91d199 = L.marker(
+                [42.3554334, -71.060511],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_ef9a61ebc76a35644920fc344479b1b0 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "warning", "iconColor": "white", "markerColor": "orange", "prefix": "fa"}
+            );
+            marker_2032e1daa79d30eb8075afd13f91d199.setIcon(icon_ef9a61ebc76a35644920fc344479b1b0);
+        
+    
+        var popup_0973b7dfb4871fc566cb0dd814d77160 = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_6158dd31bb8bdf080ce00419ae774efb = $(`<div id="html_6158dd31bb8bdf080ce00419ae774efb" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Boston, MA<br>             <b>Crime Index (1-10):</b> 6.55<br>             <b>Crimes per 1000 People:</b> 15.75<br>             <b>Homicides per 1000 People:</b> 0.13<br>             <b>Rapes per 1000 People:</b> 0.67<br>             <b>Assaults per 1000 People:</b> 7.75<br>             <b>Robberies per 1000 People:</b> 7.21         </div>`)[0];
+                popup_0973b7dfb4871fc566cb0dd814d77160.setContent(html_6158dd31bb8bdf080ce00419ae774efb);
+            
+        
+
+        marker_2032e1daa79d30eb8075afd13f91d199.bindPopup(popup_0973b7dfb4871fc566cb0dd814d77160)
+        ;
+
+        
+    
+    
+            var marker_d79b3759e6ee0df20128e7c51bc9d498 = L.marker(
+                [42.8867166, -78.8783922],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_d7d0f1e9ac7a273c79cb5a3014104cf3 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "warning", "iconColor": "white", "markerColor": "orange", "prefix": "fa"}
+            );
+            marker_d79b3759e6ee0df20128e7c51bc9d498.setIcon(icon_d7d0f1e9ac7a273c79cb5a3014104cf3);
+        
+    
+        var popup_d575184f2bdb3d9cfbd85fce91555f86 = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_5fb11156ea82ccf2bc131b1fb4d58d62 = $(`<div id="html_5fb11156ea82ccf2bc131b1fb4d58d62" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Buffalo, NY<br>             <b>Crime Index (1-10):</b> 5.25<br>             <b>Crimes per 1000 People:</b> 12.58<br>             <b>Homicides per 1000 People:</b> 0.16<br>             <b>Rapes per 1000 People:</b> 0.72<br>             <b>Assaults per 1000 People:</b> 5.94<br>             <b>Robberies per 1000 People:</b> 5.77         </div>`)[0];
+                popup_d575184f2bdb3d9cfbd85fce91555f86.setContent(html_5fb11156ea82ccf2bc131b1fb4d58d62);
+            
+        
+
+        marker_d79b3759e6ee0df20128e7c51bc9d498.bindPopup(popup_d575184f2bdb3d9cfbd85fce91555f86)
+        ;
+
+        
+    
+    
+            var marker_eca190a1fabee2e6233812df000c3d84 = L.marker(
+                [35.2272086, -80.8430827],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_b72e43808a6c509c6fd75d9cc49099af = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "check-circle", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_eca190a1fabee2e6233812df000c3d84.setIcon(icon_b72e43808a6c509c6fd75d9cc49099af);
+        
+    
+        var popup_e8375b58e06c68ef01d6dcd78aaed200 = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_0a0adbb22c5e6885eb308ed3604971ca = $(`<div id="html_0a0adbb22c5e6885eb308ed3604971ca" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Charlotte, NC<br>             <b>Crime Index (1-10):</b> 5.00<br>             <b>Crimes per 1000 People:</b> 11.96<br>             <b>Homicides per 1000 People:</b> 0.13<br>             <b>Rapes per 1000 People:</b> 0.51<br>             <b>Assaults per 1000 People:</b> 7.32<br>             <b>Robberies per 1000 People:</b> 3.99         </div>`)[0];
+                popup_e8375b58e06c68ef01d6dcd78aaed200.setContent(html_0a0adbb22c5e6885eb308ed3604971ca);
+            
+        
+
+        marker_eca190a1fabee2e6233812df000c3d84.bindPopup(popup_e8375b58e06c68ef01d6dcd78aaed200)
+        ;
+
+        
+    
+    
+            var marker_8e8961580cb5d643fe24a7b7af94e512 = L.marker(
+                [41.8755616, -87.6244212],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_a0f7161fb0b81c4ef3c378a1c01d248e = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "warning", "iconColor": "white", "markerColor": "orange", "prefix": "fa"}
+            );
+            marker_8e8961580cb5d643fe24a7b7af94e512.setIcon(icon_a0f7161fb0b81c4ef3c378a1c01d248e);
+        
+    
+        var popup_fa2627ba06c3967518312f374cf90401 = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_ab611e62ff989234233600a9e7b00119 = $(`<div id="html_ab611e62ff989234233600a9e7b00119" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Chicago, IL<br>             <b>Crime Index (1-10):</b> 6.96<br>             <b>Crimes per 1000 People:</b> 16.73<br>             <b>Homicides per 1000 People:</b> 0.24<br>             <b>Rapes per 1000 People:</b> 0.77<br>             <b>Assaults per 1000 People:</b> 8.11<br>             <b>Robberies per 1000 People:</b> 7.62         </div>`)[0];
+                popup_fa2627ba06c3967518312f374cf90401.setContent(html_ab611e62ff989234233600a9e7b00119);
+            
+        
+
+        marker_8e8961580cb5d643fe24a7b7af94e512.bindPopup(popup_fa2627ba06c3967518312f374cf90401)
+        ;
+
+        
+    
+    
+            var marker_4575b1e896577faf4bdd0143279296ac = L.marker(
+                [39.1014537, -84.5124602],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_cdc5d7911fbce480074629c2ba7c3fe7 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "check-circle", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_4575b1e896577faf4bdd0143279296ac.setIcon(icon_cdc5d7911fbce480074629c2ba7c3fe7);
+        
+    
+        var popup_d473ba52d79a05b32ae050980a9a21fa = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_13eecc04550cf8d2b08898c6868a89b4 = $(`<div id="html_13eecc04550cf8d2b08898c6868a89b4" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Cincinnati, OH<br>             <b>Crime Index (1-10):</b> 4.44<br>             <b>Crimes per 1000 People:</b> 10.59<br>             <b>Homicides per 1000 People:</b> 0.15<br>             <b>Rapes per 1000 People:</b> 0.88<br>             <b>Assaults per 1000 People:</b> 4.51<br>             <b>Robberies per 1000 People:</b> 5.04         </div>`)[0];
+                popup_d473ba52d79a05b32ae050980a9a21fa.setContent(html_13eecc04550cf8d2b08898c6868a89b4);
+            
+        
+
+        marker_4575b1e896577faf4bdd0143279296ac.bindPopup(popup_d473ba52d79a05b32ae050980a9a21fa)
+        ;
+
+        
+    
+    
+            var marker_517b44f9c395cb668f9e4e378c1ffed1 = L.marker(
+                [41.4996574, -81.6936772],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_ab9a3c8d8369aee20ed6cc64d74ceaab = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "warning", "iconColor": "white", "markerColor": "orange", "prefix": "fa"}
+            );
+            marker_517b44f9c395cb668f9e4e378c1ffed1.setIcon(icon_ab9a3c8d8369aee20ed6cc64d74ceaab);
+        
+    
+        var popup_78e9f78e59741ab65517b3a2d02537c3 = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_d37d81a3933aa67d3db336dcf4a9bfdf = $(`<div id="html_d37d81a3933aa67d3db336dcf4a9bfdf" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Cleveland, OH<br>             <b>Crime Index (1-10):</b> 6.19<br>             <b>Crimes per 1000 People:</b> 14.85<br>             <b>Homicides per 1000 People:</b> 0.26<br>             <b>Rapes per 1000 People:</b> 1.20<br>             <b>Assaults per 1000 People:</b> 4.97<br>             <b>Robberies per 1000 People:</b> 8.41         </div>`)[0];
+                popup_78e9f78e59741ab65517b3a2d02537c3.setContent(html_d37d81a3933aa67d3db336dcf4a9bfdf);
+            
+        
+
+        marker_517b44f9c395cb668f9e4e378c1ffed1.bindPopup(popup_78e9f78e59741ab65517b3a2d02537c3)
+        ;
+
+        
+    
+    
+            var marker_f325178f11b2dc8a9b59fbf62ed28820 = L.marker(
+                [39.9622601, -83.0007065],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_725c24b614cbd0cb72592a23c32fb058 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "check-circle", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_f325178f11b2dc8a9b59fbf62ed28820.setIcon(icon_725c24b614cbd0cb72592a23c32fb058);
+        
+    
+        var popup_50d84f8cf636b5aa4ee5407f951bec6d = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_d3fe672f57cd3a0034c1a0830809f6fb = $(`<div id="html_d3fe672f57cd3a0034c1a0830809f6fb" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Columbus, OH<br>             <b>Crime Index (1-10):</b> 3.50<br>             <b>Crimes per 1000 People:</b> 8.32<br>             <b>Homicides per 1000 People:</b> 0.13<br>             <b>Rapes per 1000 People:</b> 0.85<br>             <b>Assaults per 1000 People:</b> 2.76<br>             <b>Robberies per 1000 People:</b> 4.58         </div>`)[0];
+                popup_50d84f8cf636b5aa4ee5407f951bec6d.setContent(html_d3fe672f57cd3a0034c1a0830809f6fb);
+            
+        
+
+        marker_f325178f11b2dc8a9b59fbf62ed28820.bindPopup(popup_50d84f8cf636b5aa4ee5407f951bec6d)
+        ;
+
+        
+    
+    
+            var marker_72d85cd7bc7126af36104cec07024acb = L.marker(
+                [32.7762719, -96.7968559],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_cde60765c306f9047b72bea518825264 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "warning", "iconColor": "white", "markerColor": "orange", "prefix": "fa"}
+            );
+            marker_72d85cd7bc7126af36104cec07024acb.setIcon(icon_cde60765c306f9047b72bea518825264);
+        
+    
+        var popup_877ff893f3aa50ab2783b8f44ac289f9 = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_3d7009193e234f517aebaeb8de54d3f7 = $(`<div id="html_3d7009193e234f517aebaeb8de54d3f7" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Dallas, TX<br>             <b>Crime Index (1-10):</b> 5.60<br>             <b>Crimes per 1000 People:</b> 13.42<br>             <b>Homicides per 1000 People:</b> 0.24<br>             <b>Rapes per 1000 People:</b> 0.76<br>             <b>Assaults per 1000 People:</b> 6.51<br>             <b>Robberies per 1000 People:</b> 5.91         </div>`)[0];
+                popup_877ff893f3aa50ab2783b8f44ac289f9.setContent(html_3d7009193e234f517aebaeb8de54d3f7);
+            
+        
+
+        marker_72d85cd7bc7126af36104cec07024acb.bindPopup(popup_877ff893f3aa50ab2783b8f44ac289f9)
+        ;
+
+        
+    
+    
+            var marker_f1dda4e01a7df8ca5f87b32b172fa85c = L.marker(
+                [39.7392364, -104.984862],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_fb5639e00a86736287a47fb7e54ba80e = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "check-circle", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_f1dda4e01a7df8ca5f87b32b172fa85c.setIcon(icon_fb5639e00a86736287a47fb7e54ba80e);
+        
+    
+        var popup_8cca7cc1c040953fe4b1b23b92c10ef3 = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_bdba6f7b8965a2762c5afd00f4b2579a = $(`<div id="html_bdba6f7b8965a2762c5afd00f4b2579a" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Denver, CO<br>             <b>Crime Index (1-10):</b> 3.24<br>             <b>Crimes per 1000 People:</b> 7.68<br>             <b>Homicides per 1000 People:</b> 0.12<br>             <b>Rapes per 1000 People:</b> 0.73<br>             <b>Assaults per 1000 People:</b> 3.92<br>             <b>Robberies per 1000 People:</b> 2.91         </div>`)[0];
+                popup_8cca7cc1c040953fe4b1b23b92c10ef3.setContent(html_bdba6f7b8965a2762c5afd00f4b2579a);
+            
+        
+
+        marker_f1dda4e01a7df8ca5f87b32b172fa85c.bindPopup(popup_8cca7cc1c040953fe4b1b23b92c10ef3)
+        ;
+
+        
+    
+    
+            var marker_a62d3d1747252748d418fa9c11a6b4fe = L.marker(
+                [42.3315509, -83.0466403],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_c6cbe49e0b799a894368cc0311a4ace1 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "exclamation-circle", "iconColor": "white", "markerColor": "red", "prefix": "fa"}
+            );
+            marker_a62d3d1747252748d418fa9c11a6b4fe.setIcon(icon_c6cbe49e0b799a894368cc0311a4ace1);
+        
+    
+        var popup_30ade9723aedecc2655e8c572174b4c8 = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_23f0109c2c17503ae1d84f5b3f98fbd2 = $(`<div id="html_23f0109c2c17503ae1d84f5b3f98fbd2" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Detroit, MI<br>             <b>Crime Index (1-10):</b> 9.21<br>             <b>Crimes per 1000 People:</b> 22.23<br>             <b>Homicides per 1000 People:</b> 0.47<br>             <b>Rapes per 1000 People:</b> 0.99<br>             <b>Assaults per 1000 People:</b> 10.14<br>             <b>Robberies per 1000 People:</b> 10.63         </div>`)[0];
+                popup_30ade9723aedecc2655e8c572174b4c8.setContent(html_23f0109c2c17503ae1d84f5b3f98fbd2);
+            
+        
+
+        marker_a62d3d1747252748d418fa9c11a6b4fe.bindPopup(popup_30ade9723aedecc2655e8c572174b4c8)
+        ;
+
+        
+    
+    
+            var marker_781137257e205e5d71a7dcac8a082a15 = L.marker(
+                [31.7601164, -106.4870404],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_6971165662c0fc48a8edbf0e78856408 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "check-circle", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_781137257e205e5d71a7dcac8a082a15.setIcon(icon_6971165662c0fc48a8edbf0e78856408);
+        
+    
+        var popup_74bc81191c6fa2cb1a6fe2a7e5cdc26f = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_201eef3712ed21419e67523c3791efa7 = $(`<div id="html_201eef3712ed21419e67523c3791efa7" style="width: 100.0%; height: 100.0%;">             <b>City:</b> El Paso, TX<br>             <b>Crime Index (1-10):</b> 2.86<br>             <b>Crimes per 1000 People:</b> 6.75<br>             <b>Homicides per 1000 People:</b> 0.05<br>             <b>Rapes per 1000 People:</b> 0.39<br>             <b>Assaults per 1000 People:</b> 4.76<br>             <b>Robberies per 1000 People:</b> 1.55         </div>`)[0];
+                popup_74bc81191c6fa2cb1a6fe2a7e5cdc26f.setContent(html_201eef3712ed21419e67523c3791efa7);
+            
+        
+
+        marker_781137257e205e5d71a7dcac8a082a15.bindPopup(popup_74bc81191c6fa2cb1a6fe2a7e5cdc26f)
+        ;
+
+        
+    
+    
+            var marker_1047c7fd2acfe30cbb08a2913fd25371 = L.marker(
+                [33.0357485, -97.32462503769055],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_56dc31148ad47e55452269969c03b7d0 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "check-circle", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_1047c7fd2acfe30cbb08a2913fd25371.setIcon(icon_56dc31148ad47e55452269969c03b7d0);
+        
+    
+        var popup_b9084b5467244fb817a3760d9d5e0f91 = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_e525d67c4acce99dc478a07f4bf9dc05 = $(`<div id="html_e525d67c4acce99dc478a07f4bf9dc05" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Fort Worth, TX<br>             <b>Crime Index (1-10):</b> 4.02<br>             <b>Crimes per 1000 People:</b> 9.58<br>             <b>Homicides per 1000 People:</b> 0.17<br>             <b>Rapes per 1000 People:</b> 0.72<br>             <b>Assaults per 1000 People:</b> 5.04<br>             <b>Robberies per 1000 People:</b> 3.65         </div>`)[0];
+                popup_b9084b5467244fb817a3760d9d5e0f91.setContent(html_e525d67c4acce99dc478a07f4bf9dc05);
+            
+        
+
+        marker_1047c7fd2acfe30cbb08a2913fd25371.bindPopup(popup_b9084b5467244fb817a3760d9d5e0f91)
+        ;
+
+        
+    
+    
+            var marker_62318acd65d27dd40ed723bf342b6d4e = L.marker(
+                [36.7394421, -119.78483],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_46abb010d18479a306324d5d3390f84a = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "check-circle", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_62318acd65d27dd40ed723bf342b6d4e.setIcon(icon_46abb010d18479a306324d5d3390f84a);
+        
+    
+        var popup_ee0346781955b5a1a21500ce3fb97318 = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_14904d3ad6649cdd696ee5cec1b78eec = $(`<div id="html_14904d3ad6649cdd696ee5cec1b78eec" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Fresno, CA<br>             <b>Crime Index (1-10):</b> 3.92<br>             <b>Crimes per 1000 People:</b> 9.33<br>             <b>Homicides per 1000 People:</b> 0.13<br>             <b>Rapes per 1000 People:</b> 0.43<br>             <b>Assaults per 1000 People:</b> 4.98<br>             <b>Robberies per 1000 People:</b> 3.79         </div>`)[0];
+                popup_ee0346781955b5a1a21500ce3fb97318.setContent(html_14904d3ad6649cdd696ee5cec1b78eec);
+            
+        
+
+        marker_62318acd65d27dd40ed723bf342b6d4e.bindPopup(popup_ee0346781955b5a1a21500ce3fb97318)
+        ;
+
+        
+    
+    
+            var marker_e5f5751b50d04176049fb5950f05905b = L.marker(
+                [21.304547, -157.855676],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_5f67ea085593c4151336af85fc798228 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "check-circle", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_e5f5751b50d04176049fb5950f05905b.setIcon(icon_5f67ea085593c4151336af85fc798228);
+        
+    
+        var popup_80f2f6f592343ec5ef50c16caf6e8ce6 = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_afa52b7c8aa3a086a56067396681606e = $(`<div id="html_afa52b7c8aa3a086a56067396681606e" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Honolulu, HI<br>             <b>Crime Index (1-10):</b> 1.19<br>             <b>Crimes per 1000 People:</b> 2.69<br>             <b>Homicides per 1000 People:</b> 0.03<br>             <b>Rapes per 1000 People:</b> 0.29<br>             <b>Assaults per 1000 People:</b> 1.14<br>             <b>Robberies per 1000 People:</b> 1.23         </div>`)[0];
+                popup_80f2f6f592343ec5ef50c16caf6e8ce6.setContent(html_afa52b7c8aa3a086a56067396681606e);
+            
+        
+
+        marker_e5f5751b50d04176049fb5950f05905b.bindPopup(popup_80f2f6f592343ec5ef50c16caf6e8ce6)
+        ;
+
+        
+    
+    
+            var marker_d650c342190f238410037de2b8b7f775 = L.marker(
+                [29.7589382, -95.3676974],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_c77fe9d4431f245a3ad458e6cbfd7274 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "check-circle", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_d650c342190f238410037de2b8b7f775.setIcon(icon_c77fe9d4431f245a3ad458e6cbfd7274);
+        
+    
+        var popup_6c9d005384b8450451899e606023ad82 = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_7678ebecbee92d1b9de58a5d0d020efe = $(`<div id="html_7678ebecbee92d1b9de58a5d0d020efe" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Houston, TX<br>             <b>Crime Index (1-10):</b> 4.53<br>             <b>Crimes per 1000 People:</b> 10.81<br>             <b>Homicides per 1000 People:</b> 0.20<br>             <b>Rapes per 1000 People:</b> 0.53<br>             <b>Assaults per 1000 People:</b> 4.84<br>             <b>Robberies per 1000 People:</b> 5.24         </div>`)[0];
+                popup_6c9d005384b8450451899e606023ad82.setContent(html_7678ebecbee92d1b9de58a5d0d020efe);
+            
+        
+
+        marker_d650c342190f238410037de2b8b7f775.bindPopup(popup_6c9d005384b8450451899e606023ad82)
+        ;
+
+        
+    
+    
+            var marker_e76604b140ac59c288d9e4ebc3e7ce13 = L.marker(
+                [39.7683331, -86.1583502],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_ee9bfd823c49ca7326f305716fe812c6 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "check-circle", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_e76604b140ac59c288d9e4ebc3e7ce13.setIcon(icon_ee9bfd823c49ca7326f305716fe812c6);
+        
+    
+        var popup_529782e3c3de83c12130302accfafd7b = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_35ca09606af406ef114ec14e095aadd4 = $(`<div id="html_35ca09606af406ef114ec14e095aadd4" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Indianapolis, IN<br>             <b>Crime Index (1-10):</b> 4.57<br>             <b>Crimes per 1000 People:</b> 10.92<br>             <b>Homicides per 1000 People:</b> 0.15<br>             <b>Rapes per 1000 People:</b> 0.73<br>             <b>Assaults per 1000 People:</b> 5.84<br>             <b>Robberies per 1000 People:</b> 4.19         </div>`)[0];
+                popup_529782e3c3de83c12130302accfafd7b.setContent(html_35ca09606af406ef114ec14e095aadd4);
+            
+        
+
+        marker_e76604b140ac59c288d9e4ebc3e7ce13.bindPopup(popup_529782e3c3de83c12130302accfafd7b)
+        ;
+
+        
+    
+    
+            var marker_151b0583c1ff9c38dc9803fbfc21b5d6 = L.marker(
+                [30.3321838, -81.655651],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_ef5c1e5f2f1ebba95386299435d30bb4 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "check-circle", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_151b0583c1ff9c38dc9803fbfc21b5d6.setIcon(icon_ef5c1e5f2f1ebba95386299435d30bb4);
+        
+    
+        var popup_2a7048217a27492b8670764e62ad4d1d = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_29c66091d47c29a0c550fe4be7053023 = $(`<div id="html_29c66091d47c29a0c550fe4be7053023" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Jacksonville, FL<br>             <b>Crime Index (1-10):</b> 4.42<br>             <b>Crimes per 1000 People:</b> 10.55<br>             <b>Homicides per 1000 People:</b> 0.14<br>             <b>Rapes per 1000 People:</b> 0.64<br>             <b>Assaults per 1000 People:</b> 6.30<br>             <b>Robberies per 1000 People:</b> 3.47         </div>`)[0];
+                popup_2a7048217a27492b8670764e62ad4d1d.setContent(html_29c66091d47c29a0c550fe4be7053023);
+            
+        
+
+        marker_151b0583c1ff9c38dc9803fbfc21b5d6.bindPopup(popup_2a7048217a27492b8670764e62ad4d1d)
+        ;
+
+        
+    
+    
+            var marker_8bf86fdbd4b7fe014b7408fc3e1b7ea3 = L.marker(
+                [39.100105, -94.5781416],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_4562d14d9ee7aa8678542900b67566c8 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "warning", "iconColor": "white", "markerColor": "orange", "prefix": "fa"}
+            );
+            marker_8bf86fdbd4b7fe014b7408fc3e1b7ea3.setIcon(icon_4562d14d9ee7aa8678542900b67566c8);
+        
+    
+        var popup_4cdc5012341f3731e9332073fb1f2818 = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_259ec7a878eb32c1cd661bdab8bb8414 = $(`<div id="html_259ec7a878eb32c1cd661bdab8bb8414" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Kansas City, MO<br>             <b>Crime Index (1-10):</b> 6.99<br>             <b>Crimes per 1000 People:</b> 16.80<br>             <b>Homicides per 1000 People:</b> 0.25<br>             <b>Rapes per 1000 People:</b> 0.86<br>             <b>Assaults per 1000 People:</b> 9.74<br>             <b>Robberies per 1000 People:</b> 5.96         </div>`)[0];
+                popup_4cdc5012341f3731e9332073fb1f2818.setContent(html_259ec7a878eb32c1cd661bdab8bb8414);
+            
+        
+
+        marker_8bf86fdbd4b7fe014b7408fc3e1b7ea3.bindPopup(popup_4cdc5012341f3731e9332073fb1f2818)
+        ;
+
+        
+    
+    
+            var marker_501c22d0cba880d06b1c1dd62488b177 = L.marker(
+                [36.1672559, -115.148516],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_4a60b6594de7e75ef1460456575cf4a5 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "check-circle", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_501c22d0cba880d06b1c1dd62488b177.setIcon(icon_4a60b6594de7e75ef1460456575cf4a5);
+        
+    
+        var popup_712a6bfe9616eaa5dc4b1899b30ea007 = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_a1cbff3591c568abfbedec8b15c36473 = $(`<div id="html_a1cbff3591c568abfbedec8b15c36473" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Las Vegas, NV<br>             <b>Crime Index (1-10):</b> 3.65<br>             <b>Crimes per 1000 People:</b> 8.66<br>             <b>Homicides per 1000 People:</b> 0.12<br>             <b>Rapes per 1000 People:</b> 0.54<br>             <b>Assaults per 1000 People:</b> 4.28<br>             <b>Robberies per 1000 People:</b> 3.73         </div>`)[0];
+                popup_712a6bfe9616eaa5dc4b1899b30ea007.setContent(html_a1cbff3591c568abfbedec8b15c36473);
+            
+        
+
+        marker_501c22d0cba880d06b1c1dd62488b177.bindPopup(popup_712a6bfe9616eaa5dc4b1899b30ea007)
+        ;
+
+        
+    
+    
+            var marker_c0bf71e6be1909243d4d2c6bd48a5426 = L.marker(
+                [33.7690164, -118.191604],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_2cd333b1757b1b4bedd2e615319bb82a = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "check-circle", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_c0bf71e6be1909243d4d2c6bd48a5426.setIcon(icon_2cd333b1757b1b4bedd2e615319bb82a);
+        
+    
+        var popup_9e9ab0e6a5d41378bfa3399ffbbe7554 = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_88032aa39b0e4e5722002fa5b550a3d0 = $(`<div id="html_88032aa39b0e4e5722002fa5b550a3d0" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Long Beach, CA<br>             <b>Crime Index (1-10):</b> 4.24<br>             <b>Crimes per 1000 People:</b> 10.11<br>             <b>Homicides per 1000 People:</b> 0.14<br>             <b>Rapes per 1000 People:</b> 0.43<br>             <b>Assaults per 1000 People:</b> 4.38<br>             <b>Robberies per 1000 People:</b> 5.16         </div>`)[0];
+                popup_9e9ab0e6a5d41378bfa3399ffbbe7554.setContent(html_88032aa39b0e4e5722002fa5b550a3d0);
+            
+        
+
+        marker_c0bf71e6be1909243d4d2c6bd48a5426.bindPopup(popup_9e9ab0e6a5d41378bfa3399ffbbe7554)
+        ;
+
+        
+    
+    
+            var marker_8107a501c7f1eb271d0b73b605e083a3 = L.marker(
+                [34.0536909, -118.242766],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_4e343e16fde37426e64a4997f29c3eca = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "warning", "iconColor": "white", "markerColor": "orange", "prefix": "fa"}
+            );
+            marker_8107a501c7f1eb271d0b73b605e083a3.setIcon(icon_4e343e16fde37426e64a4997f29c3eca);
+        
+    
+        var popup_3e0c17b44c2091ceb33b7fe7fc16677e = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_de4f44a19f1943d75d07aa6fa48c4978 = $(`<div id="html_de4f44a19f1943d75d07aa6fa48c4978" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Los Angeles, CA<br>             <b>Crime Index (1-10):</b> 5.86<br>             <b>Crimes per 1000 People:</b> 14.06<br>             <b>Homicides per 1000 People:</b> 0.18<br>             <b>Rapes per 1000 People:</b> 0.49<br>             <b>Assaults per 1000 People:</b> 7.29<br>             <b>Robberies per 1000 People:</b> 6.09         </div>`)[0];
+                popup_3e0c17b44c2091ceb33b7fe7fc16677e.setContent(html_de4f44a19f1943d75d07aa6fa48c4978);
+            
+        
+
+        marker_8107a501c7f1eb271d0b73b605e083a3.bindPopup(popup_3e0c17b44c2091ceb33b7fe7fc16677e)
+        ;
+
+        
+    
+    
+            var marker_afd2904ab1aae81718dbbd47f60c18d0 = L.marker(
+                [38.2542376, -85.759407],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_165a3862c2ebe383770135d5628431f3 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "check-circle", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_afd2904ab1aae81718dbbd47f60c18d0.setIcon(icon_165a3862c2ebe383770135d5628431f3);
+        
+    
+        var popup_1c1b6525c59778f5f697e970bf490614 = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_2a60e31f3e401ad7c017362742056429 = $(`<div id="html_2a60e31f3e401ad7c017362742056429" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Louisville, KY<br>             <b>Crime Index (1-10):</b> 2.54<br>             <b>Crimes per 1000 People:</b> 5.97<br>             <b>Homicides per 1000 People:</b> 0.09<br>             <b>Rapes per 1000 People:</b> 0.31<br>             <b>Assaults per 1000 People:</b> 3.07<br>             <b>Robberies per 1000 People:</b> 2.50         </div>`)[0];
+                popup_1c1b6525c59778f5f697e970bf490614.setContent(html_2a60e31f3e401ad7c017362742056429);
+            
+        
+
+        marker_afd2904ab1aae81718dbbd47f60c18d0.bindPopup(popup_1c1b6525c59778f5f697e970bf490614)
+        ;
+
+        
+    
+    
+            var marker_a3460cbae2e942627d7f5089160fafa8 = L.marker(
+                [35.1460249, -90.0517638],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_06789c67a4936bfaff6f9746e0fdbb82 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "warning", "iconColor": "white", "markerColor": "orange", "prefix": "fa"}
+            );
+            marker_a3460cbae2e942627d7f5089160fafa8.setIcon(icon_06789c67a4936bfaff6f9746e0fdbb82);
+        
+    
+        var popup_43268181baba9e5f1a01d75de37dc292 = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_feb3dc159769a70038a2f89395beb967 = $(`<div id="html_feb3dc159769a70038a2f89395beb967" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Memphis, TN<br>             <b>Crime Index (1-10):</b> 6.11<br>             <b>Crimes per 1000 People:</b> 14.66<br>             <b>Homicides per 1000 People:</b> 0.21<br>             <b>Rapes per 1000 People:</b> 0.97<br>             <b>Assaults per 1000 People:</b> 6.97<br>             <b>Robberies per 1000 People:</b> 6.51         </div>`)[0];
+                popup_43268181baba9e5f1a01d75de37dc292.setContent(html_feb3dc159769a70038a2f89395beb967);
+            
+        
+
+        marker_a3460cbae2e942627d7f5089160fafa8.bindPopup(popup_43268181baba9e5f1a01d75de37dc292)
+        ;
+
+        
+    
+    
+            var marker_e015b8053b6b044479f578f0577ecbda = L.marker(
+                [33.4151005, -111.831455],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_05dc9514455960b4a2872fa25081ca30 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "check-circle", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_e015b8053b6b044479f578f0577ecbda.setIcon(icon_05dc9514455960b4a2872fa25081ca30);
+        
+    
+        var popup_0e07cb41b96516928a4de8ef6aa1a47d = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_f05d8955b58db25f305025b8e1acf1ca = $(`<div id="html_f05d8955b58db25f305025b8e1acf1ca" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Mesa, AZ<br>             <b>Crime Index (1-10):</b> 2.32<br>             <b>Crimes per 1000 People:</b> 5.45<br>             <b>Homicides per 1000 People:</b> 0.04<br>             <b>Rapes per 1000 People:</b> 0.36<br>             <b>Assaults per 1000 People:</b> 3.92<br>             <b>Robberies per 1000 People:</b> 1.13         </div>`)[0];
+                popup_0e07cb41b96516928a4de8ef6aa1a47d.setContent(html_f05d8955b58db25f305025b8e1acf1ca);
+            
+        
+
+        marker_e015b8053b6b044479f578f0577ecbda.bindPopup(popup_0e07cb41b96516928a4de8ef6aa1a47d)
+        ;
+
+        
+    
+    
+            var marker_dd356a5f5fb9794ad89a820bc1e7b1e5 = L.marker(
+                [25.7741728, -80.19362],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_e66b0696c2b7d542f095c2d1eb44af5a = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "exclamation-circle", "iconColor": "white", "markerColor": "red", "prefix": "fa"}
+            );
+            marker_dd356a5f5fb9794ad89a820bc1e7b1e5.setIcon(icon_e66b0696c2b7d542f095c2d1eb44af5a);
+        
+    
+        var popup_bc6a0c8a1c9ee9b69289814df45735d5 = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_38f98bcdde2d8646891870c59a246ba7 = $(`<div id="html_38f98bcdde2d8646891870c59a246ba7" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Miami, FL<br>             <b>Crime Index (1-10):</b> 9.77<br>             <b>Crimes per 1000 People:</b> 23.59<br>             <b>Homicides per 1000 People:</b> 0.28<br>             <b>Rapes per 1000 People:</b> 0.49<br>             <b>Assaults per 1000 People:</b> 11.86<br>             <b>Robberies per 1000 People:</b> 10.96         </div>`)[0];
+                popup_bc6a0c8a1c9ee9b69289814df45735d5.setContent(html_38f98bcdde2d8646891870c59a246ba7);
+            
+        
+
+        marker_dd356a5f5fb9794ad89a820bc1e7b1e5.bindPopup(popup_bc6a0c8a1c9ee9b69289814df45735d5)
+        ;
+
+        
+    
+    
+            var marker_ece3f319e0ac57963efcfb623ed71100 = L.marker(
+                [43.0386475, -87.9090751],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_538e20f79353c3781b1daae06a86c1a4 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "check-circle", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_ece3f319e0ac57963efcfb623ed71100.setIcon(icon_538e20f79353c3781b1daae06a86c1a4);
+        
+    
+        var popup_a7c2b3d4576900b5eceeb1710dd2c0de = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_93b8c0782d5fcef8b9749231c141def9 = $(`<div id="html_93b8c0782d5fcef8b9749231c141def9" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Milwaukee, WI<br>             <b>Crime Index (1-10):</b> 3.76<br>             <b>Crimes per 1000 People:</b> 8.95<br>             <b>Homicides per 1000 People:</b> 0.16<br>             <b>Rapes per 1000 People:</b> 0.49<br>             <b>Assaults per 1000 People:</b> 3.72<br>             <b>Robberies per 1000 People:</b> 4.58         </div>`)[0];
+                popup_a7c2b3d4576900b5eceeb1710dd2c0de.setContent(html_93b8c0782d5fcef8b9749231c141def9);
+            
+        
+
+        marker_ece3f319e0ac57963efcfb623ed71100.bindPopup(popup_a7c2b3d4576900b5eceeb1710dd2c0de)
+        ;
+
+        
+    
+    
+            var marker_ef1a486f471f9777963c78bffd5ab92b = L.marker(
+                [44.9772995, -93.2654692],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_5792e773f294a252d6a01314d594f689 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "warning", "iconColor": "white", "markerColor": "orange", "prefix": "fa"}
+            );
+            marker_ef1a486f471f9777963c78bffd5ab92b.setIcon(icon_5792e773f294a252d6a01314d594f689);
+        
+    
+        var popup_d3c35a0dae9e96d444cfc5d0154ba69c = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_4804d7b485dc8efa869110fe67c056ac = $(`<div id="html_4804d7b485dc8efa869110fe67c056ac" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Minneapolis, MN<br>             <b>Crime Index (1-10):</b> 5.36<br>             <b>Crimes per 1000 People:</b> 12.85<br>             <b>Homicides per 1000 People:</b> 0.12<br>             <b>Rapes per 1000 People:</b> 1.15<br>             <b>Assaults per 1000 People:</b> 5.41<br>             <b>Robberies per 1000 People:</b> 6.16         </div>`)[0];
+                popup_d3c35a0dae9e96d444cfc5d0154ba69c.setContent(html_4804d7b485dc8efa869110fe67c056ac);
+            
+        
+
+        marker_ef1a486f471f9777963c78bffd5ab92b.bindPopup(popup_d3c35a0dae9e96d444cfc5d0154ba69c)
+        ;
+
+        
+    
+    
+            var marker_390b0ccb08a0d02eccaf802c0f51f512 = L.marker(
+                [36.1622767, -86.7742984],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_db41f504711755c0d1cc6c7027cf1238 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "warning", "iconColor": "white", "markerColor": "orange", "prefix": "fa"}
+            );
+            marker_390b0ccb08a0d02eccaf802c0f51f512.setIcon(icon_db41f504711755c0d1cc6c7027cf1238);
+        
+    
+        var popup_20c63ad2992c8c798440746164d99506 = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_728e28a613e14ff6ed14417effff37f6 = $(`<div id="html_728e28a613e14ff6ed14417effff37f6" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Nashville, TN<br>             <b>Crime Index (1-10):</b> 5.23<br>             <b>Crimes per 1000 People:</b> 12.52<br>             <b>Homicides per 1000 People:</b> 0.15<br>             <b>Rapes per 1000 People:</b> 0.73<br>             <b>Assaults per 1000 People:</b> 7.67<br>             <b>Robberies per 1000 People:</b> 3.97         </div>`)[0];
+                popup_20c63ad2992c8c798440746164d99506.setContent(html_728e28a613e14ff6ed14417effff37f6);
+            
+        
+
+        marker_390b0ccb08a0d02eccaf802c0f51f512.bindPopup(popup_20c63ad2992c8c798440746164d99506)
+        ;
+
+        
+    
+    
+            var marker_373eae76a1adf709ee143b662c598fdd = L.marker(
+                [29.9759983, -90.0782127],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_7d041b2ab50eed16125fecaa92d2889a = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "warning", "iconColor": "white", "markerColor": "orange", "prefix": "fa"}
+            );
+            marker_373eae76a1adf709ee143b662c598fdd.setIcon(icon_7d041b2ab50eed16125fecaa92d2889a);
+        
+    
+        var popup_9c6c67c08c5784cb6ec8934235d0695e = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_e57e9a81c81eb487bffd1a1f09cbf33e = $(`<div id="html_e57e9a81c81eb487bffd1a1f09cbf33e" style="width: 100.0%; height: 100.0%;">             <b>City:</b> New Orleans, LA<br>             <b>Crime Index (1-10):</b> 5.76<br>             <b>Crimes per 1000 People:</b> 13.82<br>             <b>Homicides per 1000 People:</b> 0.47<br>             <b>Rapes per 1000 People:</b> 0.63<br>             <b>Assaults per 1000 People:</b> 5.68<br>             <b>Robberies per 1000 People:</b> 7.03         </div>`)[0];
+                popup_9c6c67c08c5784cb6ec8934235d0695e.setContent(html_e57e9a81c81eb487bffd1a1f09cbf33e);
+            
+        
+
+        marker_373eae76a1adf709ee143b662c598fdd.bindPopup(popup_9c6c67c08c5784cb6ec8934235d0695e)
+        ;
+
+        
+    
+    
+            var marker_0a38f76667d771d0f6160776ef44db48 = L.marker(
+                [40.7127281, -74.0060152],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_6515b7e97716859dc428498638c3de44 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "warning", "iconColor": "white", "markerColor": "orange", "prefix": "fa"}
+            );
+            marker_0a38f76667d771d0f6160776ef44db48.setIcon(icon_6515b7e97716859dc428498638c3de44);
+        
+    
+        var popup_6b2ac8bc692a73db703b38a32c08e5c7 = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_b414d978c0ef54087c2db58145875c28 = $(`<div id="html_b414d978c0ef54087c2db58145875c28" style="width: 100.0%; height: 100.0%;">             <b>City:</b> New York City, NY<br>             <b>Crime Index (1-10):</b> 5.75<br>             <b>Crimes per 1000 People:</b> 13.80<br>             <b>Homicides per 1000 People:</b> 0.15<br>             <b>Rapes per 1000 People:</b> 0.33<br>             <b>Assaults per 1000 People:</b> 5.76<br>             <b>Robberies per 1000 People:</b> 7.57         </div>`)[0];
+                popup_6b2ac8bc692a73db703b38a32c08e5c7.setContent(html_b414d978c0ef54087c2db58145875c28);
+            
+        
+
+        marker_0a38f76667d771d0f6160776ef44db48.bindPopup(popup_6b2ac8bc692a73db703b38a32c08e5c7)
+        ;
+
+        
+    
+    
+            var marker_63735cd6356790141bf94280a1ce7be1 = L.marker(
+                [40.735657, -74.1723667],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_8c41799637b972932204e6d07c708550 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "exclamation-circle", "iconColor": "white", "markerColor": "red", "prefix": "fa"}
+            );
+            marker_63735cd6356790141bf94280a1ce7be1.setIcon(icon_8c41799637b972932204e6d07c708550);
+        
+    
+        var popup_0eddf7f89107b791f93bd299f34e4933 = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_eaf9b77009fee6f89329609f2dcc0eab = $(`<div id="html_eaf9b77009fee6f89329609f2dcc0eab" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Newark, NJ<br>             <b>Crime Index (1-10):</b> 9.46<br>             <b>Crimes per 1000 People:</b> 22.84<br>             <b>Homicides per 1000 People:</b> 0.33<br>             <b>Rapes per 1000 People:</b> 0.87<br>             <b>Assaults per 1000 People:</b> 9.17<br>             <b>Robberies per 1000 People:</b> 12.47         </div>`)[0];
+                popup_0eddf7f89107b791f93bd299f34e4933.setContent(html_eaf9b77009fee6f89329609f2dcc0eab);
+            
+        
+
+        marker_63735cd6356790141bf94280a1ce7be1.bindPopup(popup_0eddf7f89107b791f93bd299f34e4933)
+        ;
+
+        
+    
+    
+            var marker_0737b534ce5ade634184a0977ffcdbd1 = L.marker(
+                [37.8044557, -122.271356],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_11478ab3ccd8ab08db5088b71ed55049 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "warning", "iconColor": "white", "markerColor": "orange", "prefix": "fa"}
+            );
+            marker_0737b534ce5ade634184a0977ffcdbd1.setIcon(icon_11478ab3ccd8ab08db5088b71ed55049);
+        
+    
+        var popup_bb8c9380931066fa5e750f63d9880be3 = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_9cc7485f98b62ac1e9d2311e581fb088 = $(`<div id="html_9cc7485f98b62ac1e9d2311e581fb088" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Oakland, CA<br>             <b>Crime Index (1-10):</b> 7.55<br>             <b>Crimes per 1000 People:</b> 18.18<br>             <b>Homicides per 1000 People:</b> 0.29<br>             <b>Rapes per 1000 People:</b> 0.95<br>             <b>Assaults per 1000 People:</b> 8.22<br>             <b>Robberies per 1000 People:</b> 8.72         </div>`)[0];
+                popup_bb8c9380931066fa5e750f63d9880be3.setContent(html_9cc7485f98b62ac1e9d2311e581fb088);
+            
+        
+
+        marker_0737b534ce5ade634184a0977ffcdbd1.bindPopup(popup_bb8c9380931066fa5e750f63d9880be3)
+        ;
+
+        
+    
+    
+            var marker_4f3ab892208190aed775f36b82628bb2 = L.marker(
+                [35.4729886, -97.5170536],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_31fb2a7be0359ddb1eaa9d00576efe62 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "check-circle", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_4f3ab892208190aed775f36b82628bb2.setIcon(icon_31fb2a7be0359ddb1eaa9d00576efe62);
+        
+    
+        var popup_550b997d19d5da69649ee39b43099c82 = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_c602d559e307c2582094f9e2d2d01e0c = $(`<div id="html_c602d559e307c2582094f9e2d2d01e0c" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Oklahoma City, OK<br>             <b>Crime Index (1-10):</b> 4.00<br>             <b>Crimes per 1000 People:</b> 9.53<br>             <b>Homicides per 1000 People:</b> 0.13<br>             <b>Rapes per 1000 People:</b> 0.82<br>             <b>Assaults per 1000 People:</b> 5.79<br>             <b>Robberies per 1000 People:</b> 2.80         </div>`)[0];
+                popup_550b997d19d5da69649ee39b43099c82.setContent(html_c602d559e307c2582094f9e2d2d01e0c);
+            
+        
+
+        marker_4f3ab892208190aed775f36b82628bb2.bindPopup(popup_550b997d19d5da69649ee39b43099c82)
+        ;
+
+        
+    
+    
+            var marker_dec7fe8e7890717a3fa7f6f0cc59f120 = L.marker(
+                [41.2587459, -95.9383758],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_3b3a08d0827644addcc8222a51618a29 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "check-circle", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_dec7fe8e7890717a3fa7f6f0cc59f120.setIcon(icon_3b3a08d0827644addcc8222a51618a29);
+        
+    
+        var popup_34760bd014a81fc732d14b1a26b2bf3d = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_164f360b2bcee76d68fe50b360e81e19 = $(`<div id="html_164f360b2bcee76d68fe50b360e81e19" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Omaha, NE<br>             <b>Crime Index (1-10):</b> 3.14<br>             <b>Crimes per 1000 People:</b> 7.43<br>             <b>Homicides per 1000 People:</b> 0.08<br>             <b>Rapes per 1000 People:</b> 0.50<br>             <b>Assaults per 1000 People:</b> 4.75<br>             <b>Robberies per 1000 People:</b> 2.10         </div>`)[0];
+                popup_34760bd014a81fc732d14b1a26b2bf3d.setContent(html_164f360b2bcee76d68fe50b360e81e19);
+            
+        
+
+        marker_dec7fe8e7890717a3fa7f6f0cc59f120.bindPopup(popup_34760bd014a81fc732d14b1a26b2bf3d)
+        ;
+
+        
+    
+    
+            var marker_227c3dfe8118c8cb10701f277aee514f = L.marker(
+                [28.5421109, -81.3790304],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_f988665898b8d7f031a211d8109f7311 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "warning", "iconColor": "white", "markerColor": "orange", "prefix": "fa"}
+            );
+            marker_227c3dfe8118c8cb10701f277aee514f.setIcon(icon_f988665898b8d7f031a211d8109f7311);
+        
+    
+        var popup_7ff9af8c235a78b4d840cb8fbbcb4655 = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_43957c20fdafab5545e87e95103a14e2 = $(`<div id="html_43957c20fdafab5545e87e95103a14e2" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Orlando, FL<br>             <b>Crime Index (1-10):</b> 7.13<br>             <b>Crimes per 1000 People:</b> 17.16<br>             <b>Homicides per 1000 People:</b> 0.12<br>             <b>Rapes per 1000 People:</b> 0.83<br>             <b>Assaults per 1000 People:</b> 11.06<br>             <b>Robberies per 1000 People:</b> 5.14         </div>`)[0];
+                popup_7ff9af8c235a78b4d840cb8fbbcb4655.setContent(html_43957c20fdafab5545e87e95103a14e2);
+            
+        
+
+        marker_227c3dfe8118c8cb10701f277aee514f.bindPopup(popup_7ff9af8c235a78b4d840cb8fbbcb4655)
+        ;
+
+        
+    
+    
+            var marker_033f8025a7249d393a81d0c77e1a1ce2 = L.marker(
+                [39.9527237, -75.1635262],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_b84da1c357a3a5917b1cf18446859a42 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "check-circle", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_033f8025a7249d393a81d0c77e1a1ce2.setIcon(icon_b84da1c357a3a5917b1cf18446859a42);
+        
+    
+        var popup_2e5dc98d90261deda0cedb8a246332c0 = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_6ce9322a1424475d887f5ac99324b784 = $(`<div id="html_6ce9322a1424475d887f5ac99324b784" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Philadelphia, PA<br>             <b>Crime Index (1-10):</b> 4.88<br>             <b>Crimes per 1000 People:</b> 11.68<br>             <b>Homicides per 1000 People:</b> 0.22<br>             <b>Rapes per 1000 People:</b> 0.56<br>             <b>Assaults per 1000 People:</b> 4.60<br>             <b>Robberies per 1000 People:</b> 6.29         </div>`)[0];
+                popup_2e5dc98d90261deda0cedb8a246332c0.setContent(html_6ce9322a1424475d887f5ac99324b784);
+            
+        
+
+        marker_033f8025a7249d393a81d0c77e1a1ce2.bindPopup(popup_2e5dc98d90261deda0cedb8a246332c0)
+        ;
+
+        
+    
+    
+            var marker_cb68406b0d5f6e9eec2eb67b50cd5250 = L.marker(
+                [33.4484367, -112.074141],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_1739b52763a8123c27f3d14ea47b6924 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "check-circle", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_cb68406b0d5f6e9eec2eb67b50cd5250.setIcon(icon_1739b52763a8123c27f3d14ea47b6924);
+        
+    
+        var popup_5af9a57061c784b03e35da7b65f7b6e1 = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_96c74e49196fe4662e97b3a1a5cd00b3 = $(`<div id="html_96c74e49196fe4662e97b3a1a5cd00b3" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Phoenix, AZ<br>             <b>Crime Index (1-10):</b> 3.28<br>             <b>Crimes per 1000 People:</b> 7.77<br>             <b>Homicides per 1000 People:</b> 0.13<br>             <b>Rapes per 1000 People:</b> 0.43<br>             <b>Assaults per 1000 People:</b> 4.38<br>             <b>Robberies per 1000 People:</b> 2.84         </div>`)[0];
+                popup_5af9a57061c784b03e35da7b65f7b6e1.setContent(html_96c74e49196fe4662e97b3a1a5cd00b3);
+            
+        
+
+        marker_cb68406b0d5f6e9eec2eb67b50cd5250.bindPopup(popup_5af9a57061c784b03e35da7b65f7b6e1)
+        ;
+
+        
+    
+    
+            var marker_b306a453935858e1fe5279bdfb2b04a8 = L.marker(
+                [40.4416941, -79.9900861],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_4103b9575e0ac982fb2870b06037e0cb = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "check-circle", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_b306a453935858e1fe5279bdfb2b04a8.setIcon(icon_4103b9575e0ac982fb2870b06037e0cb);
+        
+    
+        var popup_c2be7dbe6b15a5128677ad5142319d9f = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_79edb8fc1d3f52633f6e0e0b47ab2b12 = $(`<div id="html_79edb8fc1d3f52633f6e0e0b47ab2b12" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Pittsburgh, PA<br>             <b>Crime Index (1-10):</b> 4.40<br>             <b>Crimes per 1000 People:</b> 10.51<br>             <b>Homicides per 1000 People:</b> 0.13<br>             <b>Rapes per 1000 People:</b> 0.50<br>             <b>Assaults per 1000 People:</b> 3.89<br>             <b>Robberies per 1000 People:</b> 5.98         </div>`)[0];
+                popup_c2be7dbe6b15a5128677ad5142319d9f.setContent(html_79edb8fc1d3f52633f6e0e0b47ab2b12);
+            
+        
+
+        marker_b306a453935858e1fe5279bdfb2b04a8.bindPopup(popup_c2be7dbe6b15a5128677ad5142319d9f)
+        ;
+
+        
+    
+    
+            var marker_e556008dda7381231bb99e2accd0ed91 = L.marker(
+                [45.5202471, -122.674194],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_8750143a9e06c0068a0fcdc2385ae86a = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "warning", "iconColor": "white", "markerColor": "orange", "prefix": "fa"}
+            );
+            marker_e556008dda7381231bb99e2accd0ed91.setIcon(icon_8750143a9e06c0068a0fcdc2385ae86a);
+        
+    
+        var popup_c92ba427407e0d5885a8a6c6c12a6d8a = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_9dc80a287733f8ea1df13deac501afb2 = $(`<div id="html_9dc80a287733f8ea1df13deac501afb2" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Portland, OR<br>             <b>Crime Index (1-10):</b> 5.14<br>             <b>Crimes per 1000 People:</b> 12.31<br>             <b>Homicides per 1000 People:</b> 0.07<br>             <b>Rapes per 1000 People:</b> 0.75<br>             <b>Assaults per 1000 People:</b> 7.24<br>             <b>Robberies per 1000 People:</b> 4.24         </div>`)[0];
+                popup_c92ba427407e0d5885a8a6c6c12a6d8a.setContent(html_9dc80a287733f8ea1df13deac501afb2);
+            
+        
+
+        marker_e556008dda7381231bb99e2accd0ed91.bindPopup(popup_c92ba427407e0d5885a8a6c6c12a6d8a)
+        ;
+
+        
+    
+    
+            var marker_7cdcd4b09c2f9d613b1ab1839aabc7fd = L.marker(
+                [35.7803977, -78.6390989],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_5a23d8a8aca171283074c55f81eff30c = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "check-circle", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_7cdcd4b09c2f9d613b1ab1839aabc7fd.setIcon(icon_5a23d8a8aca171283074c55f81eff30c);
+        
+    
+        var popup_bb8f3c4d50451a33662463cab6f44059 = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_528f61aaa912c12d1fe895cdcfa5a819 = $(`<div id="html_528f61aaa912c12d1fe895cdcfa5a819" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Raleigh, NC<br>             <b>Crime Index (1-10):</b> 2.61<br>             <b>Crimes per 1000 People:</b> 6.14<br>             <b>Homicides per 1000 People:</b> 0.07<br>             <b>Rapes per 1000 People:</b> 0.32<br>             <b>Assaults per 1000 People:</b> 3.54<br>             <b>Robberies per 1000 People:</b> 2.21         </div>`)[0];
+                popup_bb8f3c4d50451a33662463cab6f44059.setContent(html_528f61aaa912c12d1fe895cdcfa5a819);
+            
+        
+
+        marker_7cdcd4b09c2f9d613b1ab1839aabc7fd.bindPopup(popup_bb8f3c4d50451a33662463cab6f44059)
+        ;
+
+        
+    
+    
+            var marker_52fdbcab5855f5fadf961f6a29b1d8cd = L.marker(
+                [38.5810606, -121.493895],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_8abeb0647d7dba61564bf80229fae73c = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "check-circle", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_52fdbcab5855f5fadf961f6a29b1d8cd.setIcon(icon_8abeb0647d7dba61564bf80229fae73c);
+        
+    
+        var popup_366e94845a29b15cd877a1c163b4df29 = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_55b802593ae04ea218fed9dc67737c64 = $(`<div id="html_55b802593ae04ea218fed9dc67737c64" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Sacramento, CA<br>             <b>Crime Index (1-10):</b> 4.19<br>             <b>Crimes per 1000 People:</b> 10.00<br>             <b>Homicides per 1000 People:</b> 0.13<br>             <b>Rapes per 1000 People:</b> 0.49<br>             <b>Assaults per 1000 People:</b> 4.87<br>             <b>Robberies per 1000 People:</b> 4.52         </div>`)[0];
+                popup_366e94845a29b15cd877a1c163b4df29.setContent(html_55b802593ae04ea218fed9dc67737c64);
+            
+        
+
+        marker_52fdbcab5855f5fadf961f6a29b1d8cd.bindPopup(popup_366e94845a29b15cd877a1c163b4df29)
+        ;
+
+        
+    
+    
+            var marker_32d8a6725df1d7ae6f45c8680d84cd5e = L.marker(
+                [40.7596198, -111.886797],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_9e9bf75562c44baf6d325dc61cb4d07c = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "check-circle", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_32d8a6725df1d7ae6f45c8680d84cd5e.setIcon(icon_9e9bf75562c44baf6d325dc61cb4d07c);
+        
+    
+        var popup_38c72ccb2eaa67089abf0482ccf0ef7f = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_7f126059c17e68d2b7b436c71505292d = $(`<div id="html_7f126059c17e68d2b7b436c71505292d" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Salt Lake City, UT<br>             <b>Crime Index (1-10):</b> 3.03<br>             <b>Crimes per 1000 People:</b> 7.16<br>             <b>Homicides per 1000 People:</b> 0.08<br>             <b>Rapes per 1000 People:</b> 0.74<br>             <b>Assaults per 1000 People:</b> 3.56<br>             <b>Robberies per 1000 People:</b> 2.79         </div>`)[0];
+                popup_38c72ccb2eaa67089abf0482ccf0ef7f.setContent(html_7f126059c17e68d2b7b436c71505292d);
+            
+        
+
+        marker_32d8a6725df1d7ae6f45c8680d84cd5e.bindPopup(popup_38c72ccb2eaa67089abf0482ccf0ef7f)
+        ;
+
+        
+    
+    
+            var marker_531b3568cd4ac04b98d7d7e7fa67fdff = L.marker(
+                [29.3067354, -98.60465674366606],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_3e7001523a2e9210dceeac0d138f5fcb = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "check-circle", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_531b3568cd4ac04b98d7d7e7fa67fdff.setIcon(icon_3e7001523a2e9210dceeac0d138f5fcb);
+        
+    
+        var popup_933e827aa111cd9ba385b422f95a6d7b = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_7142e6e22167f4f54f92a7e98794278d = $(`<div id="html_7142e6e22167f4f54f92a7e98794278d" style="width: 100.0%; height: 100.0%;">             <b>City:</b> San Antonio, TX<br>             <b>Crime Index (1-10):</b> 2.55<br>             <b>Crimes per 1000 People:</b> 6.01<br>             <b>Homicides per 1000 People:</b> 0.13<br>             <b>Rapes per 1000 People:</b> 0.52<br>             <b>Assaults per 1000 People:</b> 3.18<br>             <b>Robberies per 1000 People:</b> 2.17         </div>`)[0];
+                popup_933e827aa111cd9ba385b422f95a6d7b.setContent(html_7142e6e22167f4f54f92a7e98794278d);
+            
+        
+
+        marker_531b3568cd4ac04b98d7d7e7fa67fdff.bindPopup(popup_933e827aa111cd9ba385b422f95a6d7b)
+        ;
+
+        
+    
+    
+            var marker_c9f079eef8fd662c1810377ab7ad54e6 = L.marker(
+                [32.7174202, -117.162772],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_675042a8550ee28a60204848ce1a5cc6 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "check-circle", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_c9f079eef8fd662c1810377ab7ad54e6.setIcon(icon_675042a8550ee28a60204848ce1a5cc6);
+        
+    
+        var popup_cb34b7f34a2e1e9aa3ff1af72b6f3990 = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_ebd7a3d1b9e7395379bb0f7868e82371 = $(`<div id="html_ebd7a3d1b9e7395379bb0f7868e82371" style="width: 100.0%; height: 100.0%;">             <b>City:</b> San Diego, CA<br>             <b>Crime Index (1-10):</b> 2.87<br>             <b>Crimes per 1000 People:</b> 6.77<br>             <b>Homicides per 1000 People:</b> 0.07<br>             <b>Rapes per 1000 People:</b> 0.33<br>             <b>Assaults per 1000 People:</b> 4.00<br>             <b>Robberies per 1000 People:</b> 2.37         </div>`)[0];
+                popup_cb34b7f34a2e1e9aa3ff1af72b6f3990.setContent(html_ebd7a3d1b9e7395379bb0f7868e82371);
+            
+        
+
+        marker_c9f079eef8fd662c1810377ab7ad54e6.bindPopup(popup_cb34b7f34a2e1e9aa3ff1af72b6f3990)
+        ;
+
+        
+    
+    
+            var marker_16348ec282be3de9f342cb4e9fae7ccf = L.marker(
+                [37.7792588, -122.4193286],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_15e1f7ef256937de65548ee652c873fb = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "check-circle", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_16348ec282be3de9f342cb4e9fae7ccf.setIcon(icon_15e1f7ef256937de65548ee652c873fb);
+        
+    
+        var popup_4e795cf689a154b86d3a4638105ab4c8 = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_06ccf49f1986480a64fcf478503657b2 = $(`<div id="html_06ccf49f1986480a64fcf478503657b2" style="width: 100.0%; height: 100.0%;">             <b>City:</b> San Francisco, CA<br>             <b>Crime Index (1-10):</b> 4.94<br>             <b>Crimes per 1000 People:</b> 11.82<br>             <b>Homicides per 1000 People:</b> 0.12<br>             <b>Rapes per 1000 People:</b> 0.48<br>             <b>Assaults per 1000 People:</b> 4.46<br>             <b>Robberies per 1000 People:</b> 6.77         </div>`)[0];
+                popup_4e795cf689a154b86d3a4638105ab4c8.setContent(html_06ccf49f1986480a64fcf478503657b2);
+            
+        
+
+        marker_16348ec282be3de9f342cb4e9fae7ccf.bindPopup(popup_4e795cf689a154b86d3a4638105ab4c8)
+        ;
+
+        
+    
+    
+            var marker_890a7c7b7503cf24a54a77df84759849 = L.marker(
+                [37.3361663, -121.890591],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_b1152485896bef66a7bd080fa1ef4e5b = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "check-circle", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_890a7c7b7503cf24a54a77df84759849.setIcon(icon_b1152485896bef66a7bd080fa1ef4e5b);
+        
+    
+        var popup_53d54e1df79ceb7f5ab8229cd764bc49 = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_bcfb75eeb8ec7cad264d23f1ea2ec07e = $(`<div id="html_bcfb75eeb8ec7cad264d23f1ea2ec07e" style="width: 100.0%; height: 100.0%;">             <b>City:</b> San Jose, CA<br>             <b>Crime Index (1-10):</b> 2.18<br>             <b>Crimes per 1000 People:</b> 5.10<br>             <b>Homicides per 1000 People:</b> 0.05<br>             <b>Rapes per 1000 People:</b> 0.43<br>             <b>Assaults per 1000 People:</b> 3.26<br>             <b>Robberies per 1000 People:</b> 1.37         </div>`)[0];
+                popup_53d54e1df79ceb7f5ab8229cd764bc49.setContent(html_bcfb75eeb8ec7cad264d23f1ea2ec07e);
+            
+        
+
+        marker_890a7c7b7503cf24a54a77df84759849.bindPopup(popup_53d54e1df79ceb7f5ab8229cd764bc49)
+        ;
+
+        
+    
+    
+            var marker_3645529127893bd99ce4c3c15787ed89 = L.marker(
+                [47.6038321, -122.330062],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_57b0323e771fa59f7c6d2d54ed8abcdb = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "check-circle", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_3645529127893bd99ce4c3c15787ed89.setIcon(icon_57b0323e771fa59f7c6d2d54ed8abcdb);
+        
+    
+        var popup_a99d16dee8ac6ecbb6bfa32ffcfb04fc = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_44668db9875bd3fc9d73924a3bfca594 = $(`<div id="html_44668db9875bd3fc9d73924a3bfca594" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Seattle, WA<br>             <b>Crime Index (1-10):</b> 3.84<br>             <b>Crimes per 1000 People:</b> 9.14<br>             <b>Homicides per 1000 People:</b> 0.07<br>             <b>Rapes per 1000 People:</b> 0.52<br>             <b>Assaults per 1000 People:</b> 4.80<br>             <b>Robberies per 1000 People:</b> 3.74         </div>`)[0];
+                popup_a99d16dee8ac6ecbb6bfa32ffcfb04fc.setContent(html_44668db9875bd3fc9d73924a3bfca594);
+            
+        
+
+        marker_3645529127893bd99ce4c3c15787ed89.bindPopup(popup_a99d16dee8ac6ecbb6bfa32ffcfb04fc)
+        ;
+
+        
+    
+    
+            var marker_8211da13ff58282bcef3d933409ab03b = L.marker(
+                [38.6280278, -90.1910154],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_6116fc09c981dc1ffc71fd791a724952 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "exclamation-circle", "iconColor": "white", "markerColor": "red", "prefix": "fa"}
+            );
+            marker_8211da13ff58282bcef3d933409ab03b.setIcon(icon_6116fc09c981dc1ffc71fd791a724952);
+        
+    
+        var popup_4dc8c9b3c0edebbc208338b0d50d7edf = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_2b80c189a05b671f951471b12ad03c59 = $(`<div id="html_2b80c189a05b671f951471b12ad03c59" style="width: 100.0%; height: 100.0%;">             <b>City:</b> St. Louis, MO<br>             <b>Crime Index (1-10):</b> 9.75<br>             <b>Crimes per 1000 People:</b> 23.55<br>             <b>Homicides per 1000 People:</b> 0.43<br>             <b>Rapes per 1000 People:</b> 0.75<br>             <b>Assaults per 1000 People:</b> 12.84<br>             <b>Robberies per 1000 People:</b> 9.54         </div>`)[0];
+                popup_4dc8c9b3c0edebbc208338b0d50d7edf.setContent(html_2b80c189a05b671f951471b12ad03c59);
+            
+        
+
+        marker_8211da13ff58282bcef3d933409ab03b.bindPopup(popup_4dc8c9b3c0edebbc208338b0d50d7edf)
+        ;
+
+        
+    
+    
+            var marker_dccbbc4ee1be01a5897ad0e5547b53e9 = L.marker(
+                [27.9477595, -82.458444],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_dd6e88e32f9f73d6a361363a1e280a42 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "warning", "iconColor": "white", "markerColor": "orange", "prefix": "fa"}
+            );
+            marker_dccbbc4ee1be01a5897ad0e5547b53e9.setIcon(icon_dd6e88e32f9f73d6a361363a1e280a42);
+        
+    
+        var popup_b7b6dedefdd30ee3e491a30360c92af6 = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_3f95aea2d43dd3ed2889baca71bc1e3b = $(`<div id="html_3f95aea2d43dd3ed2889baca71bc1e3b" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Tampa, FL<br>             <b>Crime Index (1-10):</b> 7.81<br>             <b>Crimes per 1000 People:</b> 18.81<br>             <b>Homicides per 1000 People:</b> 0.14<br>             <b>Rapes per 1000 People:</b> 0.74<br>             <b>Assaults per 1000 People:</b> 11.64<br>             <b>Robberies per 1000 People:</b> 6.29         </div>`)[0];
+                popup_b7b6dedefdd30ee3e491a30360c92af6.setContent(html_3f95aea2d43dd3ed2889baca71bc1e3b);
+            
+        
+
+        marker_dccbbc4ee1be01a5897ad0e5547b53e9.bindPopup(popup_b7b6dedefdd30ee3e491a30360c92af6)
+        ;
+
+        
+    
+    
+            var marker_998c44550a67e31cf0d239038cb70c75 = L.marker(
+                [32.2228765, -110.974847],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_1a9f8677f55c65a649a889e91ac50f5b = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "check-circle", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_998c44550a67e31cf0d239038cb70c75.setIcon(icon_1a9f8677f55c65a649a889e91ac50f5b);
+        
+    
+        var popup_47fdbe6b9c89ff7c74bbdfda4449c528 = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_8975806e2545a4aa12a572aa5c8d9e39 = $(`<div id="html_8975806e2545a4aa12a572aa5c8d9e39" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Tucson, AZ<br>             <b>Crime Index (1-10):</b> 3.56<br>             <b>Crimes per 1000 People:</b> 8.46<br>             <b>Homicides per 1000 People:</b> 0.09<br>             <b>Rapes per 1000 People:</b> 0.60<br>             <b>Assaults per 1000 People:</b> 5.30<br>             <b>Robberies per 1000 People:</b> 2.47         </div>`)[0];
+                popup_47fdbe6b9c89ff7c74bbdfda4449c528.setContent(html_8975806e2545a4aa12a572aa5c8d9e39);
+            
+        
+
+        marker_998c44550a67e31cf0d239038cb70c75.bindPopup(popup_47fdbe6b9c89ff7c74bbdfda4449c528)
+        ;
+
+        
+    
+    
+            var marker_dc6887af14859663a89283ced37e778f = L.marker(
+                [36.1563122, -95.9927516],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_afc18e2fda7862b957e2dc35bfdb7cbc = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "check-circle", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_dc6887af14859663a89283ced37e778f.setIcon(icon_afc18e2fda7862b957e2dc35bfdb7cbc);
+        
+    
+        var popup_1ad983860f8c9ec00de3130974b9d971 = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_18b12e2e18e9431c8f32daee4b04d9c7 = $(`<div id="html_18b12e2e18e9431c8f32daee4b04d9c7" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Tulsa, OK<br>             <b>Crime Index (1-10):</b> 4.21<br>             <b>Crimes per 1000 People:</b> 10.03<br>             <b>Homicides per 1000 People:</b> 0.11<br>             <b>Rapes per 1000 People:</b> 0.71<br>             <b>Assaults per 1000 People:</b> 6.65<br>             <b>Robberies per 1000 People:</b> 2.56         </div>`)[0];
+                popup_1ad983860f8c9ec00de3130974b9d971.setContent(html_18b12e2e18e9431c8f32daee4b04d9c7);
+            
+        
+
+        marker_dc6887af14859663a89283ced37e778f.bindPopup(popup_1ad983860f8c9ec00de3130974b9d971)
+        ;
+
+        
+    
+    
+            var marker_e1428cf7434d1f10d1f8a623de4ec4f9 = L.marker(
+                [36.8496579, -75.9760751],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_997a07ac01bf55cca4dc96956a45481e = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "check-circle", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_e1428cf7434d1f10d1f8a623de4ec4f9.setIcon(icon_997a07ac01bf55cca4dc96956a45481e);
+        
+    
+        var popup_03197dea2e7c9efcf2256db06e9babaf = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_53ac19fecf875c33b3a6cd9081378381 = $(`<div id="html_53ac19fecf875c33b3a6cd9081378381" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Virginia Beach, VA<br>             <b>Crime Index (1-10):</b> 1.00<br>             <b>Crimes per 1000 People:</b> 2.22<br>             <b>Homicides per 1000 People:</b> 0.04<br>             <b>Rapes per 1000 People:</b> 0.27<br>             <b>Assaults per 1000 People:</b> 0.87<br>             <b>Robberies per 1000 People:</b> 1.03         </div>`)[0];
+                popup_03197dea2e7c9efcf2256db06e9babaf.setContent(html_53ac19fecf875c33b3a6cd9081378381);
+            
+        
+
+        marker_e1428cf7434d1f10d1f8a623de4ec4f9.bindPopup(popup_03197dea2e7c9efcf2256db06e9babaf)
+        ;
+
+        
+    
+    
+            var marker_cdc25080e278ee2571c3d4d2d5a2193a = L.marker(
+                [38.8950368, -77.0365427],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_d157930b0b96d492091d0d219a710dc8 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "warning", "iconColor": "white", "markerColor": "orange", "prefix": "fa"}
+            );
+            marker_cdc25080e278ee2571c3d4d2d5a2193a.setIcon(icon_d157930b0b96d492091d0d219a710dc8);
+        
+    
+        var popup_7e3c286917e410f6592d63918231d319 = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_fd0dceeaa72e6f47e0cb4ef896a4a295 = $(`<div id="html_fd0dceeaa72e6f47e0cb4ef896a4a295" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Washington, DC<br>             <b>Crime Index (1-10):</b> 7.31<br>             <b>Crimes per 1000 People:</b> 17.60<br>             <b>Homicides per 1000 People:</b> 0.40<br>             <b>Rapes per 1000 People:</b> 0.48<br>             <b>Assaults per 1000 People:</b> 7.59<br>             <b>Robberies per 1000 People:</b> 9.12         </div>`)[0];
+                popup_7e3c286917e410f6592d63918231d319.setContent(html_fd0dceeaa72e6f47e0cb4ef896a4a295);
+            
+        
+
+        marker_cdc25080e278ee2571c3d4d2d5a2193a.bindPopup(popup_7e3c286917e410f6592d63918231d319)
+        ;
+
+        
+    
+    
+            var marker_6c239d43eea8e24c2f046775c8ba46ee = L.marker(
+                [37.6922361, -97.3375448],
+                {}
+            ).addTo(marker_cluster_c3d03d10890492f292004f4c656a589c);
+        
+    
+            var icon_a33eafbbfc5ac0970fb5440247a91ba0 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "check-circle", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_6c239d43eea8e24c2f046775c8ba46ee.setIcon(icon_a33eafbbfc5ac0970fb5440247a91ba0);
+        
+    
+        var popup_0a30110db74001be6b29317dccfd4cba = L.popup({"maxWidth": 250});
+
+        
+            
+                var html_880967d547ec9c5c894250ce8f4ebc32 = $(`<div id="html_880967d547ec9c5c894250ce8f4ebc32" style="width: 100.0%; height: 100.0%;">             <b>City:</b> Wichita, KS<br>             <b>Crime Index (1-10):</b> 2.96<br>             <b>Crimes per 1000 People:</b> 6.99<br>             <b>Homicides per 1000 People:</b> 0.08<br>             <b>Rapes per 1000 People:</b> 0.68<br>             <b>Assaults per 1000 People:</b> 4.01<br>             <b>Robberies per 1000 People:</b> 2.22         </div>`)[0];
+                popup_0a30110db74001be6b29317dccfd4cba.setContent(html_880967d547ec9c5c894250ce8f4ebc32);
+            
+        
+
+        marker_6c239d43eea8e24c2f046775c8ba46ee.bindPopup(popup_0a30110db74001be6b29317dccfd4cba)
+        ;
+
+        
+    
+    
+            marker_cluster_c3d03d10890492f292004f4c656a589c.addTo(map_1dca6f04ed8ddb5ad65b409d42a7ac9a);
+        
+</script>
+</html>

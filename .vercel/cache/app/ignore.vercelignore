@@ -1,0 +1,7 @@
+
+
+# Ignore Python compiled files
+__pycache__/
+
+# Ignore any other non-essential files
+README.md

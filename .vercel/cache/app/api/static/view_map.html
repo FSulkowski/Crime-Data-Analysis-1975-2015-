@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crime Heatmap</title>
+</head>
+<body>
+    <h1>Crime Heatmap</h1>
+    <iframe src="{{ url_for('static', filename=map_file) }}" width="100%" height="600px"></iframe>
+    <br>
+    <a href="/visualizations/heatmap">Back to Visualizations</a>
+</body>
+</html>
