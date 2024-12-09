@@ -3,3 +3,18 @@ data/
 *.csv
 
 
+# Ignore all image files (commonly used extensions)
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.bmp
+*.tiff
+*.webp
+*.svg
+
+# Ignore Python compiled files
+__pycache__/
+
+# Ignore any other non-essential files
+README.md
