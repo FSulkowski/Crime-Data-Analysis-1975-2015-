@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, render_template
 import pandas as pd
 
-merged_df = pd.read_csv('Resources/merged_data.csv')
+merged_df = pd.read_csv('app/Resources/merged_data.csv')
 
 app = Flask(__name__)
 
@@ -64,5 +64,4 @@ def prop7():
 def prop8():
     return render_template('code_snippets.html')
 
-if __name__ == '__main__':
-    app.run(debug=True)
+

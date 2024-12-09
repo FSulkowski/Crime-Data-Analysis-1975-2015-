@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>City Safety Rankings</title>
+    <title>City Specific Crime</title>
     <link rel="stylesheet" href="../static/styles.css">
     <style>
         /* Fade-in animation CSS */
@@ -44,9 +44,9 @@
             <h2>City Crime Trend Line Graph</h2>
             <p>Explore crime trends over time by selecting a city.</p>
             
-            <div class="responsive-iframe-container">
+           
             <iframe src="{{ url_for('static', filename='lineplot_with_dropdown.html') }}" width="100%" height="600" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-            </div>
+            
            
         </section>
 
