@@ -18,7 +18,10 @@ import branca
 
 merged_df = pd.read_csv("../Resources/merged_data.csv")
 
-app = Flask(__name__)
+app = Flask(__name__, 
+            static_folder='static', 
+            template_folder='templates')
+
 
 @app.route("/")
 def prop1():
