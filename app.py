@@ -35,9 +35,6 @@ def prop3():
     return render_template('visualizations.html')
 
 
-
-
-##FRANCISCO'S CODE
 @app.route('/heatmap')
 def prop4():
     # Convert the DataFrame to JSON
@@ -64,7 +61,7 @@ def view_map(year):
     # Serve the generated heatmap HTML file
     map_file = f'crime_heatmap_{year}.html'
     return render_template('view_map.html', map_file=map_file)
-##FRANCISCO'S CODE
+
 
 @app.route("/safest_cities")
 def prop5():
