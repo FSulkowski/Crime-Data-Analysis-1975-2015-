@@ -1,17 +1,4 @@
-# Ignore large data files
-data/
-*.csv
 
-
-# Ignore all image files (commonly used extensions)
-*.jpg
-*.jpeg
-*.png
-*.gif
-*.bmp
-*.tiff
-*.webp
-*.svg
 
 # Ignore Python compiled files
 __pycache__/

@@ -1,20 +1,8 @@
 from flask import Flask, jsonify, render_template
-import sqlalchemy
-from sqlalchemy.ext.automap import automap_base
-from sqlalchemy.orm import Session
-from sqlalchemy import create_engine, func
-from sqlalchemy import and_
-import datetime as dt
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
-import folium
-from folium.plugins import HeatMap
-import requests
+
 from config import geoapify_key
-import ipywidgets as widgets
-from IPython.display import display
-import branca
+
 
 merged_df = pd.read_csv("Resources/merged_data.csv")
 
