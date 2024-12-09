@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Heatmap</title>
+    <style>
+        #map {
+            height: 600px;
+            width: 100%;
+        }
+    </style>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/simpleheat/simpleheat.js"></script> <!-- Include SimpleHeat -->
+    <script src="{{ url_for('static', filename='HeatLayer.js') }}"></script> <!-- Local Leaflet Heat plugin source https://github.com/Leaflet/Leaflet.heat-->
+</head>
+<body>
+    <h1>Animated Heatmap of Crime Rates (1975 - 2015)</h1>
+    <div id="map"></div>
+
+    <script>
+        var map = L.map('map').setView([39.8283, -98.5795], 4);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
+
+        var years = [];
+        for (var year = 1975; year <= 2015; year++) {
+            years.push(year);
+        }
+
+        var currentYear = 0;
+
+        function loadHeatmap(year) {
+    // Remove existing heatmap layer if any
+    if (window.heatmapLayer) {
+        map.removeLayer(window.heatmapLayer);
+    }
+
+    // Load the heatmap for the current year
+    var heatmapFile = 'static/crime_heatmap_' + years[year] + '.html';
+    fetch(heatmapFile)
+        .then(response => response.text())
+        .then(data => {
+            // Create a new div to hold the heatmap
+            var heatmapDiv = document.createElement('div');
+            heatmapDiv.innerHTML = data;
+            document.body.appendChild(heatmapDiv);
+
+            // Extract the map layer from the HTML and add it to the main map
+            var heatmapLayer = L.layerGroup();
+            var heatData = extractHeatDataFromHTML(heatmapDiv.innerHTML);
+
+            // Create the heat layer with options for better performance
+            heatmapLayer = L.heatLayer(heatData, {
+                radius: 20,
+                blur: 15,
+                maxZoom: 1,
+                // Add any other options that might help with performance
+            });
+
+            heatmapLayer.addTo(map);
+            window.heatmapLayer = heatmapLayer;
+
+            // Remove the heatmap div after use
+            document.body.removeChild(heatmapDiv);
+        });
+}
+
+        function animateHeatmap() {
+            loadHeatmap(currentYear);
+            currentYear++;
+            if (currentYear >= years.length) {
+                currentYear = 0;
+            }
+            setTimeout(animateHeatmap, 2000); // Change every 2 seconds
+        }
+
+        animateHeatmap();
+
+        function extractHeatDataFromHTML(html) {
+            // Implement logic to parse the HTML and extract heatmap data
+            // This will depend on how your heatmap HTML is structured
+            // Return an array of [latitude, longitude, intensity] for the heatmap
+            return [];
+        }
+    </script>
+</body>
+</html>
