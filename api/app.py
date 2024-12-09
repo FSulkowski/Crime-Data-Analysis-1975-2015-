@@ -16,7 +16,7 @@ import ipywidgets as widgets
 from IPython.display import display
 import branca
 
-merged_df = pd.read_csv("../Resources/merged_data.csv")
+merged_df = pd.read_csv("Resources/merged_data.csv")
 
 app = Flask(__name__, 
             static_folder='static', 
