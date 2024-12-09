@@ -70,5 +70,3 @@ def prop7():
 def prop8():
     return render_template('code_snippets.html')
 
-if __name__ == "__main__":
-    app.run(debug=True)
